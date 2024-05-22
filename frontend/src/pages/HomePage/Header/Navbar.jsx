@@ -41,7 +41,7 @@ const Navbar = () => {
           <ul className={`md:hidden mt-5`}>
              {
                Links.map((Link) => (
-                 <li key={Link.name} className='py-3 hover:text-blue-500 hover:bg-slate-50 transition-colors duration-300'>
+                 <li key={Link.name} className='py-3 pl-3 hover:text-blue-800 hover:bg-slate-200 transition-colors duration-500'>
                    <a href={Link.link} className=''>{Link.name}</a>
                  </li>
                ))
