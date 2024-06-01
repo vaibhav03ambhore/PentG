@@ -65,7 +65,7 @@ const Carousell=()=> {
 
         }),
       ]}
-      className="w-full p-7 max-w-[85vw] mx-auto  bg-purple-950 mt-32 mb-16">
+      className="w-full p-7 max-w-[85vw] mx-auto  bg-purple-950 mt-20 mb-16">
       <CarouselContent >
         {paintings.map((painting) => (
           <CarouselItem key={painting._id} className='sm:basis-1/2 lg:basis-1/3'

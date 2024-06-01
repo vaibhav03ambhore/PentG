@@ -10,10 +10,7 @@ const Home = () => {
   console.log(keyword);
   return (
     <div >
-        <div className="bg-black shadow-md fixed w-full z-10 top-0 px-4 py-4 ">
-          <Navbar/>
-        </div>
-        <div className='flex flex-col justify-between gap-0  h-screen mx-8 py-4'>
+        <div className='flex flex-col justify-between gap-0  h-screen  py-2'>
           <Carousell/>
           <Body/>
           <Footer/>
