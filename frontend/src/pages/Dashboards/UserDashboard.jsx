@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 
 import Sidebar from './Sidebar';
-import Profile from './Profile';
 import Paintings from './Paintings';
+import UserProfile from './UserProfile';
 
 const UserDashboard = () => {
   const [activeTab, setActiveTab] = useState('profile');
 
   return (
-    <div className="flex bg-blue-900 p-2">
-      <Sidebar setActiveTab={setActiveTab} />
-      <div className="p-2 bg-slate-700 border rounded-r-xl">
-        {activeTab === 'profile' && <Profile />}
+    <div className="sm:flex flex-row h-full bg-blue-900 p-2">
+      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+      <div className="p-2 w-full min-h-full bg-slate-700 border-none rounded-r-xl">
+        {activeTab === 'profile' && <UserProfile />}
         {activeTab === 'paintings' && <Paintings />}
       </div>
     </div>

@@ -21,7 +21,7 @@ const Login = () => {
     };
 
     return (
-        <div className='mt-20'>
+        <div className='mt-2'>
             <section className="px-8 md:pl-[10rem] flex flex-wrap">
                 <div className="mr-[4rem] mt-[5rem]">
                     <h1 className="md:text-2xl font-semibold mb-4">Sign In</h1>
