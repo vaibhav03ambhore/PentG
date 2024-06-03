@@ -5,6 +5,8 @@ import { createBrowserRouter } from "react-router-dom";
 import Login from "./pages/LoginRegister/Login.jsx";
 import Register from "./pages/LoginRegister/Register.jsx";
 import UserDashboard from "./pages/Dashboards/UserDashboard.jsx";
+import Body from "./pages/HomePage/Body/Body.jsx";
+import PaintingDetail from "./pages/PaintingDetails/PaintingDetail.jsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -12,6 +14,8 @@ const router = createBrowserRouter(
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/user-dashboard" element ={<UserDashboard/>} />
+        <Route path="/paintings" element={<Body/>} />
+        <Route path="/paintings/:id" element={<PaintingDetail />} />
         <Route index={true} path="/" element={<Home />} />
       </Route>
     )

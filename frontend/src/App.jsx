@@ -24,16 +24,3 @@ function App() {
 
 export default App
 
-
-
-
-
-
-
-
-
-{/* <Routes>
-        <Route path="/" element={<Header/>} />
-      </Routes> */}
-
-

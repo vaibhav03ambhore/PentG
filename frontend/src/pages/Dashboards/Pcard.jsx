@@ -15,6 +15,7 @@ const Pcard = ({painting}) => {
             <CardFooter className={`bg-red-400 rounded-b-xl w-full p-2 flex ${painting.status=='sold'?'justify-between ':'justify-center'} `}>
                 <p className={` font-semibold text-violet-600 ${painting.status=='sold'?'line-through ':''}`} >${painting.price}</p>
                 {painting.status=='sold' && <p className='bg-pink-900 rounded-xl px-3 py-1'>{painting.status}</p>}
+                
             </CardFooter>
             
         </Card>
