@@ -19,8 +19,11 @@ const user = {
 
 const UserProfile = () => {
   return (
-    <div className="pb-1 p-5">
-      <Profile user={user} />
+    <div className="max-w-3xl mx-auto p-6 bg-gray-900 rounded-lg shadow-md mt-10">
+      <h1 className="text-3xl font-bold mb-6 text-white text-center">User Profile</h1>
+      <div className="pb-1 p-5">
+        <Profile user={user} />
+      </div>
     </div>
   );
 };

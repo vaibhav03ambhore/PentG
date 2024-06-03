@@ -6,7 +6,8 @@ import Login from "./pages/LoginRegister/Login.jsx";
 import Register from "./pages/LoginRegister/Register.jsx";
 import UserDashboard from "./pages/Dashboards/UserDashboard.jsx";
 import Body from "./pages/HomePage/Body/Body.jsx";
-import PaintingDetail from "./pages/PaintingDetails/PaintingDetail.jsx";
+import PaintingDetail from "./pages/Paintings/PaintingDetails/PaintingDetail.jsx";
+import PaintingForm from "./pages/Paintings/UploadPainting/PaintingForm.jsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -14,6 +15,7 @@ const router = createBrowserRouter(
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/user-dashboard" element ={<UserDashboard/>} />
+        <Route path="/add-painting" element ={<PaintingForm/>} />
         <Route path="/paintings" element={<Body/>} />
         <Route path="/paintings/:id" element={<PaintingDetail />} />
         <Route index={true} path="/" element={<Home />} />

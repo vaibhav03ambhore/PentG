@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import i1 from '../../assets/p4.jpg'; 
+import i1 from '../../../assets/p4.jpg'; 
 
 const paintingsData = [
   {
