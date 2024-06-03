@@ -54,7 +54,7 @@ const Collection = () => {
                         <CardContent className='p-4  bg-yellow-900  my-2 mx-5 flex flex-col rounded-xl'>
                             <img src={painting.image} alt={painting.name} className="w-full h-auto object-cover" />
                             <CardDescription className='flex mt-3 bg-inherit'>
-                                <Link to={`/userprofile`} className='hover:underline text-cyan-200'>
+                                <Link to={`/user-dashboard`} className='hover:underline text-cyan-200'>
                                     <h1 className=' text-cyan-300 hover:text-cyan-200 text-sm md:text-lg'>@{painting.creator}</h1>
                                 </Link>
                             </CardDescription>

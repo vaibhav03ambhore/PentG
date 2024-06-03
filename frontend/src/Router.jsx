@@ -8,6 +8,7 @@ import UserDashboard from "./pages/Dashboards/UserDashboard.jsx";
 import Body from "./pages/HomePage/Body/Body.jsx";
 import PaintingDetail from "./pages/Paintings/PaintingDetails/PaintingDetail.jsx";
 import PaintingForm from "./pages/Paintings/UploadPainting/PaintingForm.jsx";
+import CheckoutPage from "./pages/Checkout/CheckoutPage.jsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -18,6 +19,7 @@ const router = createBrowserRouter(
         <Route path="/add-painting" element ={<PaintingForm/>} />
         <Route path="/paintings" element={<Body/>} />
         <Route path="/paintings/:id" element={<PaintingDetail />} />
+        <Route path="/paintings/:id/checkout" element={ <CheckoutPage />} />
         <Route index={true} path="/" element={<Home />} />
       </Route>
     )
