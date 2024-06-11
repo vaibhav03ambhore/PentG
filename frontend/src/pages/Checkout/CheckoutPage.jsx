@@ -1,64 +1,217 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
+import I1 from '../../assets/p4.jpg';
+// import axios from 'axios';
+// import { loadScript } from "@razorpay/sdk";
 
 const CheckoutPage = () => {
-  const [formData, setFormData] = useState({
-    address: '',
-    paymentMethod: 'Credit Card' // Default payment method
+  // const [painting, setPainting] = useState();
+  const [count, setCount] = useState(1);
+
+  const [shippingDetails, setShippingDetails] = useState({
+    name: '',
+    village: '',
+    city: '',
+    state: '',
+    pincode: '',
+    email: '',
+    mobile: '',
   });
-  const [paymentStatus, setPaymentStatus] = useState(null);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  // useEffect(() => {
+  //   const fetchPainting = async () => {
+  //     try {
+  //       const response = await axios.get('/painting/id'); // Replace with the actual API endpoint
+  //       setPainting(response.data);
+  //     } catch (error) {
+  //       console.error('Error fetching the painting details', error);
+  //     }
+  //   };
+  //   fetchPainting();
+  // }, []);
+
+  const painting = {
+    id: "1",
+    name: "Starry Night",
+    owner: "Vincent van Gogh",
+    image: I1,
+    price: 500
+  };  
+    
+  
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setShippingDetails({ ...shippingDetails, [name]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Simulate payment process (e.g., send data to backend, process payment)
-    // For simplicity, we'll just display a success message
-    setTimeout(() => {
-      setPaymentStatus('success');
-    }, 2000);
+
+  const handleIncrement = () => {
+    setCount(count + 1);
   };
 
-  // Dummy product data (replace with actual product data)
-  const product = {
-    name: 'Product Name',
-    price: 100 // Example price in dollars
+  const handleDecrement = () => {
+    if (count > 1) {
+      setCount(count - 1);
+    }
   };
+
+  // const handlePayment = async () => {
+  //   const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
+
+  //   if (!res) {
+  //     alert("Razorpay SDK failed to load. Are you online?");
+  //     return;
+  //   }
+
+  //   const options = {
+  //     key: "YOUR_RAZORPAY_KEY", // Replace with your Razorpay key
+  //     amount: "50000", // Amount is in paisa (INR)
+  //     currency: "INR",
+  //     name: "PentG",
+  //     description: "Purchase of Painting",
+  //     handler: function (response) {
+  //       alert(response.razorpay_payment_id);
+  //       alert(response.razorpay_order_id);
+  //       alert(response.razorpay_signature);
+  //     },
+  //     prefill: {
+  //       name: shippingDetails.name,
+  //       email: shippingDetails.email,
+  //       contact: shippingDetails.mobile,
+  //     },
+  //     notes: {
+  //       address: `${shippingDetails.village}, ${shippingDetails.city}, ${shippingDetails.state} - ${shippingDetails.pincode}`,
+  //     },
+  //     theme: {
+  //       color: "#3399cc",
+  //     },
+  //   };
+
+  //   const paymentObject = new window.Razorpay(options);
+  //   paymentObject.open();
+  // };
 
   return (
-    <div className="flex max-w-screen-xl mx-auto p-8 bg-gray-800 text-white rounded-lg shadow-lg">
-      <div className="w-1/2 pr-8">
-        <h2 className="text-2xl font-bold mb-4">Product Summary</h2>
-        <div className="mb-4">
-          <p className="text-lg font-semibold">{product.name}</p>
-          <p className="text-gray-400">${product.price}</p>
-          {/* Add more product details as needed */}
+    <div className="min-h-screen bg-gray-900 flex flex-col gap-4 md:flex-row p-8 w-full">
+      {/* <h1 className="text-3xl mb-6">Checkout</h1> */}
+      <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-6 w-full">
+        {/* <h2 className="text-lg mb-4">Painting Summary</h2> */}
+        <div className="flex items-center flex-col gap-5 space-x-4">
+          <div className="w-60 h-auto md:w-80 md:h-auto border-r-2 bg-slate-500 p-4 ">
+            <img src={painting.image} alt={painting.name} className="" />
+
+          </div>
+          <div className='flex flex-col gap-3'>
+            <p><span className='text-yellow-500 italic mr-3'>Name:</span> {painting.name}</p>
+            <p><span className='text-yellow-500 italic mr-3' >Owner:</span> {painting.owner}</p>
+            <p><span className='text-yellow-500 italic mr-3'>Count:</span> 
+              <button onClick={handleDecrement} className="px-2 py-1 bg-gray-700 text-white rounded-md">-</button>
+              <span className="px-2">{count}</span>
+              <button onClick={handleIncrement} className="px-2 py-1 bg-gray-700 text-white rounded-md">+</button>
+            </p>
+            <p><span className='text-yellow-500 italic mr-3'>Price: </span> ₹{painting.price * count}</p>
+          </div>
         </div>
       </div>
-      <div className="w-1/2">
-        <h2 className="text-2xl font-bold mb-4">Checkout</h2>
-        {paymentStatus === 'success' ? (
-          <div className="text-green-500 text-center">Payment successful! Thank you for your order.</div>
-        ) : (
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label htmlFor="address" className="block text-sm font-semibold mb-1">Shipping Address:</label>
-              <textarea id="address" name="address" value={formData.address} onChange={handleChange} className="w-full px-4 py-2 bg-gray-700 rounded-md border border-gray-600 focus:outline-none focus:border-blue-500" rows="4" required />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="paymentMethod" className="block text-sm font-semibold mb-1">Payment Method:</label>
-              <select id="paymentMethod" name="paymentMethod" value={formData.paymentMethod} onChange={handleChange} className="w-full px-4 py-2 bg-gray-700 rounded-md border border-gray-600 focus:outline-none focus:border-blue-500" required>
-                <option value="Credit Card">Credit Card</option>
-                <option value="Debit Card">Debit Card</option>
-                <option value="PayPal">PayPal</option>
-                {/* Add more payment methods as needed */}
-              </select>
-            </div>
-            <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline">Place Order</button>
-          </form>
-        )}
+      <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-6 w-full ">
+        <div className='flex flex-col items-center'>
+          <h2 className="text-lg mb-4 text-cyan-400 ">Shipping Details</h2> 
+        </div>
+        <form className="space-y-4">
+          <div>
+            <label className="block mb-2 text-sm md:text-md" htmlFor="name">Name</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              className="w-full p-2 rounded bg-gray-700 text-sm md:text-md"
+              value={shippingDetails.name}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <label className="block mb-2 text-sm md:text-md" htmlFor="village">Village</label>
+            <input
+              type="text"
+              id="village"
+              name="village"
+              className="w-full p-2 rounded bg-gray-700 text-sm md:text-md"
+              value={shippingDetails.village}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <label className="block mb-2 text-sm md:text-md" htmlFor="city">City</label>
+            <input
+              type="text"
+              id="city"
+              name="city"
+              className="w-full p-2 rounded bg-gray-700 text-sm md:text-md"
+              value={shippingDetails.city}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <label className="block mb-2 text-sm md:text-md" htmlFor="state">State</label>
+            <input
+              type="text"
+              id="state"
+              name="state"
+              className="w-full p-2 rounded bg-gray-700 text-sm md:text-md"
+              value={shippingDetails.state}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <label className="block mb-2 text-sm md:text-md" htmlFor="pincode">Pincode</label>
+            <input
+              type="number"
+              id="pincode"
+              name="pincode"
+              className="w-full p-2 rounded bg-gray-700 text-sm md:text-md"
+              value={shippingDetails.pincode}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <label className="block mb-2 text-sm md:text-md" htmlFor="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              className="w-full p-2 rounded bg-gray-700 text-sm md:text-md"
+              value={shippingDetails.email}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div>
+            <label className="block mb-2 text-sm md:text-md" htmlFor="mobile">Mobile No.</label>
+            <input
+             type="tel"
+             id="mobile"
+             name="mobile"
+             maxLength={10}
+             className="w-full p-2 rounded bg-gray-700 text-sm md:text-md"
+             value={shippingDetails.mobile}
+             onChange={handleInputChange}
+             onKeyPress={(e) => {
+               // Allow only numbers to be entered
+               const pattern = /[0-9]/;
+               if (!pattern.test(e.key)) {
+                 e.preventDefault();
+               }
+             }}
+           />
+          </div>
+        </form>
+        <button
+          // onClick={handlePayment}
+          className="bg-blue-600 hover:bg-blue-700 p-3 rounded-lg shadow-lg w-full mt-5 text-sm md:text-md "
+        >
+          Pay with Razorpay
+        </button>
       </div>
+      
     </div>
   );
 };
