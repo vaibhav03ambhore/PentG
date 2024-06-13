@@ -3,11 +3,16 @@ import React, { useState } from 'react';
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
+import { useDispatch } from 'react-redux';
+import { setCredential } from '../../redux/features/auth/authSlice';
+
 const Login = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const dispatch = useDispatch();
+    
     const submitHandler = async (e) => {
         e.preventDefault();
         try {
