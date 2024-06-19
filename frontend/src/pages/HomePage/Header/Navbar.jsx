@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { IoMenu, IoClose } from 'react-icons/io5';
 import { AiOutlineHome, AiOutlineShopping, AiOutlineUserAdd } from "react-icons/ai";
+import { useSelector } from 'react-redux';
 
 const Navbar = () => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
@@ -14,14 +15,8 @@ const Navbar = () => {
     { name: "Collection", link: "/paintings" },
   ];
 
-  const userInfo = {
-    username: 'John Doe'
-  
-  };
+  const {userInfo} =useSelector(state => state.auth);
 
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
 
   return (
     <nav className='mx-4 bg-gray-800 px-5 py-4 rounded-xl'>

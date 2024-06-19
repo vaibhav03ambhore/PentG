@@ -15,7 +15,7 @@ const router = createBrowserRouter(
       <Route path="/" element={<App />}>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/user-dashboard" element ={<UserDashboard/>} />
+        <Route path="/profile" element ={<UserDashboard/>} />
         <Route path="/add-painting" element ={<PaintingForm/>} />
         <Route path="/paintings" element={<Body/>} />
         <Route path="/paintings/:id" element={<PaintingDetail />} />

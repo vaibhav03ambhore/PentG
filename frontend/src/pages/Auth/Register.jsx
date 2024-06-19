@@ -1,12 +1,36 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useSelector, useDispatch } from "react-redux";
+
+import Loader from "../../my-components/Loader";
+import { useRegisterMutation } from "@/redux/api/users";
+import { setCredential } from "@/redux/features/auth/authSlice";
+
 
 const Register = () => {
   const [username, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [register, { isLoading }] = useRegisterMutation();
+
+  const {userInfo} = useSelector(state => state.auth);
+
+  const { search } = useLocation();
+  const searchParams = new URLSearchParams(search);
+  const redirect = searchParams.get("redirect") || "/";
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate(redirect);
+    }
+  }, [navigate, redirect, userInfo]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -15,9 +39,10 @@ const Register = () => {
       toast.error("Passwords do not match");
     } else {
       try {
-        // const res = await register({ username, email, password }).unwrap();
-        // dispatch(setCredentials({ ...res }));
-        // navigate(redirect);
+        const res = await register({ username, email, password }).unwrap();
+       
+        dispatch(setCredential({ ...res }));
+        navigate(redirect);
         toast.success("User successfully registered");
       } catch (err) {
         console.log(err);
@@ -81,16 +106,19 @@ const Register = () => {
               />
             </div>
             <button
+              disabled={isLoading}
               type="submit"
               className="bg-blue-800 text-white px-4 py-2 rounded cursor-pointer my-[1rem] hover:bg-blue-500"
             >
-              Register
+            {isLoading ? "Registering..." : "Register"}
+              
             </button>
+            {isLoading && <Loader />}
           </form>
           <div className="mt-4">
             <p className="text-white">
               Already have an account?
-              <Link to="/login" className="text-violet-400 hover:underline"> Login</Link>
+              <Link to={redirect?`/login?redirect=${redirect}`: "/login"} className="text-violet-400 hover:underline"> Login</Link>
             </p>
           </div>
         </div>

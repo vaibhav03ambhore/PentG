@@ -1,10 +1,11 @@
-
-import React, { useState } from 'react';
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useSelector, useDispatch } from "react-redux";
 
-import { useDispatch } from 'react-redux';
-import { setCredential } from '../../redux/features/auth/authSlice';
+import Loader from "../../my-components/Loader";
+import { useLoginMutation } from "@/redux/api/users";
+import { setCredential } from "@/redux/features/auth/authSlice";
 
 const Login = () => {
 
@@ -12,17 +13,32 @@ const Login = () => {
     const [password, setPassword] = useState("");
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const [login, { isLoading }] = useLoginMutation();
+
+    const {userInfo} = useSelector(state => state.auth);
+
+    const { search } = useLocation();
+    const searchParams = new URLSearchParams(search);
+    const redirect = searchParams.get("redirect") || "/";
+
+    useEffect(()=>{
+        if(userInfo){
+            navigate(redirect);
+        }
+
+    }, [navigate, redirect, userInfo]);
     
     const submitHandler = async (e) => {
         e.preventDefault();
         try {
-            // Assuming login function is defined elsewhere and returns a promise
-            // const res = await login({ email, password }).unwrap();
-            console.log("Login data:", { email, password });
-            // Handle successful login here, e.g., saving credentials, redirecting, etc.
+            const res = await login({ email, password }).unwrap();
+            dispatch(setCredential({ ...res }));
+            navigate(redirect);
             toast.success("Login Successful");
         } catch (err) {
-            toast.error(err?.response?.data?.message || err.message);
+            toast.error(err?.data?.message || err.message);
         }
     };
 
@@ -57,16 +73,18 @@ const Login = () => {
                             />
                         </div>
                         <button
+                            disabled={isLoading}
                             type="submit"
                             className="bg-blue-800 text-white px-4 py-2 rounded cursor-pointer my-[1rem] hover:bg-blue-500"
-                        >
-                            Sign In
+                        >{isLoading?"signing in...":"Sign In"}
+                            
                         </button>
+                        {isLoading && <Loader />}
                     </form>
                     <div className="mt-4">
                         <p className="text-white">
                             New Customer? 
-                            <Link to="/register" className="text-violet-400 hover:underline">
+                            <Link to={redirect?`/register?redirect=${redirect}`: "/register"} className="text-violet-400 hover:underline">
                                 Register
                             </Link>
                         </p>
