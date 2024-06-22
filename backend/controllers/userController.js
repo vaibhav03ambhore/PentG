@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 
 import asyncHandler from "../middleware/asyncHandler.js";
 import createToken from "../utils/createToken.js";
-
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 
 const createUser = asyncHandler(async(req,res)=>{
@@ -26,7 +26,7 @@ const createUser = asyncHandler(async(req,res)=>{
 
     
     try{
-
+        
         const user = await User.create({
             username,
             email,
@@ -48,10 +48,6 @@ const createUser = asyncHandler(async(req,res)=>{
         res.status(400);
         throw new Error("Invalid user data");
     }
-
-
-
-
 
 })
 
@@ -113,7 +109,12 @@ const getCurrentUserProfile= asyncHandler(async(req,res)=>{
         res.json({
             _id:currentUser._id,
             username:currentUser.username,
-            email:currentUser.email
+            email:currentUser.email,
+            phoneNumber:currentUser.phoneNumber,
+            location:currentUser.location,
+            bio:currentUser.bio,
+            socialMediaLinks:currentUser.socialMediaLinks,
+            profilePicture:currentUser.profilePicture
         })
     }else{
         res.status(404);
@@ -124,30 +125,58 @@ const getCurrentUserProfile= asyncHandler(async(req,res)=>{
 
 })
 
-const updateCurrentUserProfile= asyncHandler(async(req,res)=>{
-    const currentUser= await User.findById(req.user._id);
-
-    if(currentUser){
-        currentUser.username= req.body.username || currentUser.username;
-        currentUser.email= req.body.email || currentUser.email;
-
-
-        const updatedUser = await currentUser.save();
-    
-        res.json({
-            _id:updatedUser._id,
-            username:updatedUser.username,
-            email:updatedUser.email
-        })
-
-    }else{
-        res.status(404);
-        throw new Error("User not found");
+const updateCurrentUserProfile = asyncHandler(async (req, res) => {
+    try {
+      const currentUser = await User.findById(req.user._id);
+  
+      if (currentUser) {
+        currentUser.username = req.body.username || currentUser.username;
+        currentUser.email = req.body.email || currentUser.email;
+        currentUser.phoneNumber = req.body.phoneNumber || currentUser.phoneNumber;
+        currentUser.location = req.body.location || currentUser.location;
+        currentUser.bio = req.body.bio || currentUser.bio;
+        currentUser.socialMediaLinks = typeof req.body.socialMediaLinks === 'object' ? req.body.socialMediaLinks : currentUser.socialMediaLinks;
+  
+        if (req?.files?.profilePicture?.length > 0) {
+          try {
+            const file = req.files.profilePicture[0];
+            const uploadedFile = await uploadOnCloudinary(file.path);
+  
+            currentUser.profilePicture = uploadedFile.secure_url;
+          } catch (error) {
+            console.error("Error uploading profile picture:", error);
+            return res.status(500).json({ message: "Error uploading profile picture" });
+          }
+        } else {
+          console.log("No Profile pic uploaded");
+        }
+  
+        try {
+          
+          const updatedUser = await currentUser.save();
+          res.json({
+            _id: updatedUser._id,
+            username: updatedUser.username,
+            email: updatedUser.email,
+            phoneNumber: updatedUser.phoneNumber,
+            location: updatedUser.location,
+            bio: updatedUser.bio,
+            socialMediaLinks: updatedUser.socialMediaLinks,
+            profilePicture: updatedUser.profilePicture,
+          });
+        } catch (error) {
+          console.error("Error saving user profile:", error);
+          return res.status(500).json({ message: "Error saving user profile", error: error.message });
+        }
+      } else {
+        res.status(404).json({ message: "User not found" });
+      }
+    } catch (error) {
+      console.error("Error updating user profile:", error);
+      res.status(500).json({ message: "Internal server error", error: error.message });
     }
-
-})
-
-
+  });
+  
 
 
 export {

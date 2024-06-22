@@ -1,28 +1,50 @@
-import { time } from "console";
 import mongoose from "mongoose";
-
+  
 const userSchema = mongoose.Schema({
-    username: {
+    profilePicture: {
+        type: String,
+        default: '', 
+      },
+      username: {
         type: String,
         required: true,
-    },
-    email: {
+      },
+      bio: {
+        type: String,
+        default: '',
+      },
+      email: {
         type: String,
         required: true,
-        unique: true,
-    },
-    password: {
+      },
+      phoneNumber: {
         type: String,
-        required: true,
-    },
-
-    isAdmin: {
-        type: Boolean,
-        required: true,
-        default: false,
-    }
+        default: '',
+      },
+      socialMediaLinks: {
+        facebook: {
+            type: String,
+            default: '',
+        },
+        twitter: {
+            type: String,
+            default: '',
+        },
+        instagram: {
+            type: String,
+            default: '',
+        },
+        
+      },
+      location: {
+        type: String,
+        default: '',
+      },
+    password: String,
 },{timestamps: true});
 
 const User = mongoose.model('User', userSchema);
 
 export default User;
+
+

@@ -3,7 +3,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 
-import Loader from "../../my-components/Loader";
 import { useLoginMutation } from "@/redux/api/users";
 import { setCredential } from "@/redux/features/auth/authSlice";
 
@@ -79,7 +78,7 @@ const Login = () => {
                         >{isLoading?"signing in...":"Sign In"}
                             
                         </button>
-                        {isLoading && <Loader />}
+                        
                     </form>
                     <div className="mt-4">
                         <p className="text-white">
