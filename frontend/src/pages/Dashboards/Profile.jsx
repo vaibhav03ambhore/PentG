@@ -54,8 +54,11 @@ const Profile = () => {
       
       dispatch(setCredential({...res}));
       toast.success('Profile updated successfully!')
-    } catch (err) {
-      toast.error('Failed to update profile:', err?.data?.message || err.error);
+    } catch (error) {
+      error.data.errors.map(err=>console.log(err));
+      let errToastMess='';
+      error.data.errors.map(err=>errToastMess+=err+'\n');
+      toast.error(errToastMess?errToastMess: 'An error occurred, please try again');
     }
   };
 
@@ -88,8 +91,8 @@ const Profile = () => {
   };
 
   return (
-    <div className='bg-gray-800 rounded-b-2xl'>
-      <div className='p-4 flex flex-col sm:flex-row gap-4 mb-2'>
+    <div className='bg-gray-800 flex flex-col gap-3 rounded-b-2xl'>
+      <div className='p-4 flex flex-row gap-2'>
         <div className="flex justify-start ">
           <img src={profilePicture ||' https://th.bing.com/th?id=OIP.Aa3B6uwjU0BFoZrAQG7GzQHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&dpr=1.4&pid=3.1&rm=2'} alt="User Profile picture" className="w-20 h-20 md:w-28 md:h-28 rounded-full" />
           {isEditing && (
@@ -97,35 +100,36 @@ const Profile = () => {
               <input
                 type="file"
                 accept="image/*"
-                className=" w-4 h-full inset-0 opacity-1 -mr-4"
+                className=" w-4 h-full inset-0 opacity-0 -mr-4"
                 onChange={handleProfilePictureChange}
               />
-              <FaPlusCircle className="text-yellow-500  cursor-pointer " />
+              <FaPlusCircle className="text-yellow-500  " />
               
             </div>
           )}
         </div>
-        <div className='mt-2 md:mt-5'>
+        <div className='mt-4 md:mt-5'>
           <h2 className="text-xl md:text-3xl font-bold ">{username}</h2>
           <p className="text-gray-300 text-md md:text-xl">@{username}</p>
         </div>
         {isEditing ? (
-          <button onClick={handleSave} title='update profile' className="ml-auto mt-4 md:mt-8 md:mr-4 hover:bg-green-400 bg-green-500 rounded px-1 h-8">
+          <button onClick={handleSave} title='update profile' className="ml-auto my-auto md:my-auto md:mr-10 hover:bg-green-400 bg-green-500 rounded px-1 h-8">
              Update
           </button>
         ) : (isLoading?(
-          <button className="ml-auto mt-4 md:mt-8 md:mr-4 bg-green-500 rounded px-1 h-8">
+          <button className="ml-auto my-auto md:my-auto md:mr-10  bg-green-500 rounded px-1 h-8">
             Updating...
           </button>
             ):(
-              <button onClick={handleEditToggle} title='Edit profile' className="ml-auto mt-4 md:mt-8 md:mr-4">
+              <button onClick={handleEditToggle} title='Edit profile' className="ml-auto my-auto md:my-auto md:mr-10 hover:bg-blue-400 bg-blue-500 rounded px-3 py-1 cursor-pointer flex items-center gap-2">
                 <FaEdit />
+                Edit Profile
               </button>
             )
         )}
       </div>
 
-      <div className='bg-gray-700 p-5 border-none rounded-xl'>
+      <div className='bg-purple-900 p-5 border-none rounded-xl'>
         {isEditing ? (
           <div className='sm:text-md text-sm flex flex-col gap-4 mb-4'>
             <input
@@ -164,7 +168,7 @@ const Profile = () => {
             />
           </div>
         ) : (
-          <div className='flex flex-col sm:text-md text-sm'>
+          <div className='flex flex-col sm:text-md text-sm px-1'>
             <p className="mb-4 text-slate-300 ">{bio?bio:'Edit profile to set bio'}</p>
             <div className="mb-4">
               <p className="font-semibold ">Email: <span className={email ? `font-normal italic underline text-yellow-500` : `font-normal italic text-gray-400`}>{email ? email : "edit profile to set email"}</span></p>
@@ -177,12 +181,12 @@ const Profile = () => {
             </div>
           </div>
         )}
-        <div className='flex flex-col gap-4 bg-blue-600 p-2'>
-          <div>
-            {socialMediaLinks.instagram==" " && socialMediaLinks.facebook==" " && socialMediaLinks.twitter==" " ? (
+        <div className='flex flex-col gap-4 p-2 '>
+          <div className='text-pink-600 font-mono'>
+            {socialMediaLinks.instagram && socialMediaLinks.facebook&& socialMediaLinks.twitter? (
               <h3 className="text-lg font-normal">Social Media Links</h3>
             ) : (
-              <h3 className="text-gray-300 font-normal">You have not yet set Social Media Links</h3>
+              <h3 className="font-normal">Please provide all below Social Media Links!</h3>
             )}
           </div>
           <div className={isEditing ? `flex flex-col gap-4 md:text-md text-sm` : `flex flex-row gap-4`}>

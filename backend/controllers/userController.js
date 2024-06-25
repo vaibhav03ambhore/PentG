@@ -13,6 +13,10 @@ const createUser = asyncHandler(async(req,res)=>{
         res.status(400);
         throw new Error("Please fill in all fields");
     }
+    if (password.length < 8) {
+      res.status(400);
+      throw new Error("Password must be at least 8 characters long");
+    }
 
     const userExists=await User.findOne({email});
     if(userExists){
@@ -45,10 +49,15 @@ const createUser = asyncHandler(async(req,res)=>{
         })
 
     }catch(error){
+     if (error.code === 11000 && error.keyPattern && error.keyPattern.username) {
         res.status(400);
-        throw new Error("Invalid user data");
+        throw new Error(`Username '${username}' is already taken. Please choose a different username.`);
+      } else {
+        console.error("Error creating user:", error);
+        res.status(500); // Internal Server Error
+        throw new Error("Invalid data!");
+      }
     }
-
 })
 
 
@@ -128,7 +137,7 @@ const getCurrentUserProfile= asyncHandler(async(req,res)=>{
 const updateCurrentUserProfile = asyncHandler(async (req, res) => {
     try {
       const currentUser = await User.findById(req.user._id);
-  
+
       if (currentUser) {
         currentUser.username = req.body.username || currentUser.username;
         currentUser.email = req.body.email || currentUser.email;
@@ -136,6 +145,7 @@ const updateCurrentUserProfile = asyncHandler(async (req, res) => {
         currentUser.location = req.body.location || currentUser.location;
         currentUser.bio = req.body.bio || currentUser.bio;
         currentUser.socialMediaLinks =   JSON.parse(req.body.socialMediaLinks );
+        
         
         if (req?.files?.profilePicture?.length > 0) {
           try {
@@ -165,15 +175,22 @@ const updateCurrentUserProfile = asyncHandler(async (req, res) => {
             profilePicture: updatedUser.profilePicture,
           });
         } catch (error) {
-          console.error("Error saving user profile:", error);
-          return res.status(500).json({ message: "Error saving user profile", error: error.message });
+          if (error.name === 'ValidationError') {
+            // Handle Mongoose validation errors
+            const validationErrors = Object.values(error.errors).map(err => err.message);
+            console.error("Validation error :", validationErrors);
+            return res.status(400).json({ message: "Validation error", errors: validationErrors });
+          } else {
+            console.error("Error saving user profile:", error);
+            return res.status(500).json({ message: "Error saving user profile", error: error.message });
+          }
         }
       } else {
         res.status(404).json({ message: "User not found" });
       }
     } catch (error) {
       console.error("Error updating user profile:", error);
-      res.status(500).json({ message: "Internal server error", error: error.message });
+      res.status(500).json({ message: "Internal erver error", error: error.message });
     }
   });
   
