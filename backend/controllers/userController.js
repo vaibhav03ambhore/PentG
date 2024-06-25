@@ -135,8 +135,8 @@ const updateCurrentUserProfile = asyncHandler(async (req, res) => {
         currentUser.phoneNumber = req.body.phoneNumber || currentUser.phoneNumber;
         currentUser.location = req.body.location || currentUser.location;
         currentUser.bio = req.body.bio || currentUser.bio;
-        currentUser.socialMediaLinks = typeof req.body.socialMediaLinks === 'object' ? req.body.socialMediaLinks : currentUser.socialMediaLinks;
-  
+        currentUser.socialMediaLinks =   JSON.parse(req.body.socialMediaLinks );
+        
         if (req?.files?.profilePicture?.length > 0) {
           try {
             const file = req.files.profilePicture[0];

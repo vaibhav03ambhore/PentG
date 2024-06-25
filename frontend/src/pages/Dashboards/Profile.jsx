@@ -6,6 +6,7 @@ import { useSelector ,useDispatch} from 'react-redux';
 import { setCredential } from '@/redux/features/auth/authSlice';
 import { toast } from 'react-toastify';
 
+
 const Profile = () => {
   const {userInfo} = useSelector((state) => state.auth);
   
@@ -19,7 +20,6 @@ const Profile = () => {
   const [socialMediaLinks, setSocialMediaLinks] = useState(userInfo.socialMediaLinks || {facebook:'',twitter:'',instagram:''});
 
   const [isEditing, setIsEditing] = useState(false);
-  const [isSocialMediaEditing, setIsSocialMediaEditing] = useState(false);
 
  
   useEffect(()=>{
@@ -34,9 +34,10 @@ const Profile = () => {
   },[userInfo]);
 
   const dispatch=useDispatch();
-  const [updateProfile] = useProfileMutation();
-
+  const [updateProfile,{isLoading}] = useProfileMutation();
+  
   const handleProfileSave = async () => {
+    
     
     try {
       const formData= new FormData();
@@ -48,9 +49,9 @@ const Profile = () => {
       formData.append('bio',bio);
       formData.append('profilePicture',profilePictureFile);
       formData.append('socialMediaLinks',JSON.stringify(socialMediaLinks));
-      
 
       const res = await updateProfile(formData).unwrap();
+      
       dispatch(setCredential({...res}));
       toast.success('Profile updated successfully!')
     } catch (err) {
@@ -60,16 +61,11 @@ const Profile = () => {
 
   const handleSave = () => {
     setIsEditing(false);
-    setIsSocialMediaEditing(false);
     handleProfileSave();
   };
 
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
-  };
-
-  const handleSocialMediaEditToggle = () => {
-    setIsSocialMediaEditing(!isSocialMediaEditing);
   };
 
   const handleProfilePictureChange = (e) => {
@@ -93,18 +89,19 @@ const Profile = () => {
 
   return (
     <div className='bg-gray-800 rounded-b-2xl'>
-      <div className='p-4 flex gap-4'>
-        <div className="relative">
-          <img src={profilePicture} alt="User Profile picture" className="w-20 h-20 md:w-32 md:h-32 rounded-full bg-yellow-500" />
+      <div className='p-4 flex flex-col sm:flex-row gap-4 mb-2'>
+        <div className="flex justify-start ">
+          <img src={profilePicture ||' https://th.bing.com/th?id=OIP.Aa3B6uwjU0BFoZrAQG7GzQHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&dpr=1.4&pid=3.1&rm=2'} alt="User Profile picture" className="w-20 h-20 md:w-28 md:h-28 rounded-full" />
           {isEditing && (
-            <div className="absolute bottom-0 right-0 bg-gray-600 p-1 rounded-full cursor-pointer">
+            <div className="flex self-end -ml-8 md:mr-4 h-6 bg-gray-600 p-1 rounded-full">
               <input
                 type="file"
                 accept="image/*"
-                className="absolute inset-0 opacity-0 "
+                className=" w-4 h-full inset-0 opacity-1 -mr-4"
                 onChange={handleProfilePictureChange}
               />
-              <FaPlusCircle className="text-green-300 " />
+              <FaPlusCircle className="text-yellow-500  cursor-pointer " />
+              
             </div>
           )}
         </div>
@@ -113,19 +110,24 @@ const Profile = () => {
           <p className="text-gray-300 text-md md:text-xl">@{username}</p>
         </div>
         {isEditing ? (
-          <button onClick={handleSave} title='Save profile' className="ml-auto mt-8 mr-4 hover:bg-green-400 bg-green-500 rounded px-1 h-8">
-            Save
+          <button onClick={handleSave} title='update profile' className="ml-auto mt-4 md:mt-8 md:mr-4 hover:bg-green-400 bg-green-500 rounded px-1 h-8">
+             Update
           </button>
-        ) : (
-          <button onClick={handleEditToggle} title='Edit profile' className="ml-auto ">
-            <FaEdit />
+        ) : (isLoading?(
+          <button className="ml-auto mt-4 md:mt-8 md:mr-4 bg-green-500 rounded px-1 h-8">
+            Updating...
           </button>
+            ):(
+              <button onClick={handleEditToggle} title='Edit profile' className="ml-auto mt-4 md:mt-8 md:mr-4">
+                <FaEdit />
+              </button>
+            )
         )}
       </div>
 
       <div className='bg-gray-700 p-5 border-none rounded-xl'>
         {isEditing ? (
-          <div className='flex flex-col gap-4 mb-4'>
+          <div className='sm:text-md text-sm flex flex-col gap-4 mb-4'>
             <input
               type="text"
               value={username}
@@ -162,7 +164,7 @@ const Profile = () => {
             />
           </div>
         ) : (
-          <div>
+          <div className='flex flex-col sm:text-md text-sm'>
             <p className="mb-4 text-slate-300 ">{bio?bio:'Edit profile to set bio'}</p>
             <div className="mb-4">
               <p className="font-semibold ">Email: <span className={email ? `font-normal italic underline text-yellow-500` : `font-normal italic text-gray-400`}>{email ? email : "edit profile to set email"}</span></p>
@@ -176,56 +178,53 @@ const Profile = () => {
           </div>
         )}
         <div className='flex flex-col gap-4 bg-blue-600 p-2'>
-          <div className='flex gap-2'>
-            {socialMediaLinks && Object.keys(socialMediaLinks).length > 0 ? (
+          <div>
+            {socialMediaLinks.instagram==" " && socialMediaLinks.facebook==" " && socialMediaLinks.twitter==" " ? (
               <h3 className="text-lg font-normal">Social Media Links</h3>
             ) : (
               <h3 className="text-gray-300 font-normal">You have not yet set Social Media Links</h3>
             )}
-            {isSocialMediaEditing ? (
-              <button onClick={handleSave} title='Save social media links' className="ml-auto hover:bg-green-400 bg-green-500 rounded px-1">
-                Save
-              </button>
-            ) : (
-              <button onClick={handleSocialMediaEditToggle} title='Edit social media handles' className="ml-auto ">
-                <FaEdit />
-              </button>
-            )}
           </div>
-          <div className={isSocialMediaEditing ? `flex flex-col gap-4` : `flex gap-4`}>
-            <div className="flex gap-2">
-              <FaFacebook className="cursor-pointer bg-white w-8 h-8 rounded-full p-1 text-blue-600" />
-              {isSocialMediaEditing && (
+          <div className={isEditing ? `flex flex-col gap-4 md:text-md text-sm` : `flex flex-row gap-4`}>
+            <div className="flex flex-row  gap-2 ">
+              <a href={socialMediaLinks.facebook} target="_blank" rel="noopener noreferrer">
+                <FaFacebook size={35} className="cursor-pointer bg-white rounded-full p-1 text-blue-600" />
+              </a>
+              {isEditing && (
                 <input
                   type="url"
                   value={socialMediaLinks.facebook || ''}
                   onChange={(e) => handleSocialMediaChange('facebook', e.target.value)}
                   placeholder="Enter Facebook profile link"
-                  className='px-2 rounded bg-gray-800 '
+                  className='px-2 rounded w-full bg-gray-800 '
                 />
               )}
             </div>
-            <div className="flex gap-2">
-              <FaTwitter className="cursor-pointer bg-white w-8 h-8 rounded-full p-1 text-blue-500" />
-              {isSocialMediaEditing && (
+            <div className="flex flex-row gap-2">
+              <a href={socialMediaLinks.twitter} target="_blank" rel="noopener noreferrer">
+                  <FaTwitter size={35} className="cursor-pointer bg-white rounded-full p-1 text-blue-500" />
+              </a>
+              {isEditing && (
                 <input
                   type="url"
                   value={socialMediaLinks.twitter || ''}
                   onChange={(e) => handleSocialMediaChange('twitter', e.target.value)}
                   placeholder="Enter Twitter profile link"
-                  className='px-2 rounded bg-gray-800 '
+                  className='px-2 rounded w-full bg-gray-800 '
                 />
               )}
             </div>
-            <div className="flex gap-2">
-              <FaInstagram className="cursor-pointer bg-white w-8 h-8 rounded-full p-1 text-red-500" />
-              {isSocialMediaEditing && (
+            <div className="flex flex-row gap-2">
+              <a href={socialMediaLinks.instagram} target="_blank" rel="noopener noreferrer">
+                  <FaInstagram size={35} className="cursor-pointer bg-white rounded-full p-1 text-red-500" />
+              </a>
+              {isEditing && (
                 <input
                   type="url"
                   value={socialMediaLinks.instagram || ''}
                   onChange={(e) => handleSocialMediaChange('instagram', e.target.value)}
                   placeholder="Enter Instagram profile link"
-                  className='px-2 rounded bg-gray-800 '
+                  className='px-2 rounded w-full bg-gray-800 '
                 />
               )}
             </div>
@@ -234,6 +233,7 @@ const Profile = () => {
       </div>
     </div>
   );
-};
+
+}
 
 export default Profile;
