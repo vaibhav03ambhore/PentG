@@ -15,6 +15,13 @@ const paintingApiSlice=apiSlice.injectEndpoints({
             })
         }),
 
+        getAllSoldPaintingsByCreator:builder.query({
+            query:(id)=>`${PAINTINGS_URL}/all-sold-paintings/${id}`
+        }),
+        getAllForSalePaintingsByCreator:builder.query({
+            query:(id)=>`${PAINTINGS_URL}/all-to-sale-paintings/${id}`
+        }),
+
         getSpecificPainting:builder.query({
             query:(id)=>`${PAINTINGS_URL}/specific-painting/${id}`
         }),
@@ -43,7 +50,10 @@ const paintingApiSlice=apiSlice.injectEndpoints({
 export const {
     useGetAllPaintingsQuery,
     useCreatePaintingMutation,
+    useGetAllSoldPaintingsByCreatorQuery,
+    useGetAllForSalePaintingsByCreatorQuery,
     useGetSpecificPaintingQuery,
     useUpdatePaintingMutation,
-    useDeletePaintingMutation
+    useDeletePaintingMutation,
+
 }=paintingApiSlice;

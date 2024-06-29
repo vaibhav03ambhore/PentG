@@ -5,7 +5,6 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import userRoutes from './routes/userRoutes.js';
 import paintingRoutes from './routes/paintingRoutes.js';
-import  uploadRoutes  from './routes/uploadRoutes.js';
 import path from 'path';
 
 // Load .env file
@@ -33,7 +32,7 @@ connectDB(MONGO_URI);
 //routes
 app.use('/api/v1/users',userRoutes);
 app.use('/api/v1/paintings',paintingRoutes);
-app.use('/api/v1/uploads', uploadRoutes);
+
 
 const __dirname = path.resolve();
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));

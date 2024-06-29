@@ -1,64 +1,17 @@
 import React from 'react';
 import { useState } from 'react';
 import { useParams,Link } from 'react-router-dom';
-import i1 from '../../../assets/p4.jpg'; 
 import { FaEdit } from 'react-icons/fa';
-
-const paintingsData = [
-  {
-    _id: 1,
-    name: "Starry Night",
-    price: 25000,
-    creator: "Vincent van Gogh",
-    image: i1,
-    description:"this tis the best photograph/painting evern in the world so that all about it thank you so much for reading out.",
-    status: "For Sale"
-  },
-  {
-    _id: 2,
-    name: "Mona Lisa",
-    price: 100000000,
-    creator: "Leonardo da Vinci",
-    image: i1,
-    description:"this tis the best photograph/painting evern in the world so that all about it thank you so much for reading out.",
-    status: "For Sale"
-  },
-  {
-    _id: 3,
-    name: "The Persistence of Memory",
-    price: 15000000,
-    creator: "Salvador Dali",
-    image: i1,
-    description:"this tis the best photograph/painting evern in the world so that all about it thank you so much for reading out.",
-    status: "For Sale"
-  },
-  {
-    _id: 4,
-    name: "The Scream",
-    price: 80000000,
-    creator: "Edvard Munch",
-    image: i1,
-    description:"this tis the best photograph/painting evern in the world so that all about it thank you so much for reading out.",
-    status: "For Sale"
-  },
-  {
-    _id: 5,
-    name: "Guernica",
-    price: 200000000,
-    creator: "Pablo Picasso",
-    image: i1,
-    description:"this tis the best photograph/painting evern in the world so that all about it thank you so much for reading out.",
-    status: "For Sale"
-  }
-];
+import { useGetSpecificPaintingQuery } from '@/redux/api/paintings';
 
 const PaintingDetail = () => {
 
   const [editMode, setEditMode] = useState(null); 
   const [editedValue, setEditedValue] = useState('');
+  
+  const {id}=useParams();
 
-  const { id } = useParams();
-  const painting = paintingsData.find(p => p._id === parseInt(id));
+  const { data: painting, isLoading } = useGetSpecificPaintingQuery(id);
 
 
   let user ;
@@ -203,7 +156,7 @@ const PaintingDetail = () => {
             Save Changes
           </button>
           <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-            Delete
+            Delete Painting
           </button>
         </div>
       ) : (

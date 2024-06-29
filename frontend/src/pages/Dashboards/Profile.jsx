@@ -6,7 +6,6 @@ import { useSelector ,useDispatch} from 'react-redux';
 import { setCredential } from '@/redux/features/auth/authSlice';
 import { toast } from 'react-toastify';
 
-
 const Profile = () => {
   const {userInfo} = useSelector((state) => state.auth);
   

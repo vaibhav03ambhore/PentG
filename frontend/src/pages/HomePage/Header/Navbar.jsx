@@ -16,7 +16,7 @@ const Navbar = () => {
   ];
 
   const {userInfo} =useSelector(state => state.auth);
-
+  const userId = userInfo?._id;
 
   return (
     <nav className='mx-4 bg-gray-800 px-5 py-4 rounded-xl'>
@@ -49,8 +49,8 @@ const Navbar = () => {
           {userInfo && (
             <div className="relative ">
                <Link
-                  to='/profile'
-                  className={`flex gap-2 text-blue-gray-700 hover:text-blue-500 ${location.pathname === '/profile' ? 'text-blue-500' : ''}`}
+                  to={`/${userId}/profile`}
+                  className={`flex gap-2 text-blue-gray-700 hover:text-blue-500 ${location.pathname === `/${userId}/profile` ? 'text-blue-500' : ''}`}
                 >
                   <img src={userInfo.profilePicture ||' https://th.bing.com/th?id=OIP.Aa3B6uwjU0BFoZrAQG7GzQHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&dpr=1.4&pid=3.1&rm=2'} alt="User Profile picture" className="w-6 h-6 rounded-full hover:border-blue-600 " />
                   <h1 className="hover:underline">{userInfo.username}</h1> 
@@ -98,8 +98,8 @@ const Navbar = () => {
           {userInfo && (
             <div>
               <Link
-                to='/profile'
-                className={`${location.pathname === '/profile' ? 'text-blue-500' : ''}`}
+                to={`/${userId}/profile`}
+                className={`${location.pathname === `/${userId}/profile` ? 'text-blue-500' : ''}`}
               >
                 <li className='flex gap-2 py-3 pl-3 hover:text-blue-800 hover:bg-slate-200 transition-colors duration-500'>
                   <img src={userInfo.profilePicture ||' https://th.bing.com/th?id=OIP.Aa3B6uwjU0BFoZrAQG7GzQHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&dpr=1.4&pid=3.1&rm=2'} alt="User Profile picture" className="w-6 h-6 rounded-full hover:border-blue-600 " />

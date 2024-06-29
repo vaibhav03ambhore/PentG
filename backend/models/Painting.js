@@ -36,31 +36,34 @@ const paintingSchema = new mongoose.Schema({
     enum: ["For Sale", "Sold"],
     default: "For Sale",
   },
-  medium:{
-    type:String,
-    required:[true,"Medium is required"],
-    enum:["Oil","Acrylic","Watercolor"],
+  medium: {
+    type: String,
+    required: [true, "Medium is required"],
+    enum: ["Oil", "Acrylic", "Watercolor"],
   },
-  dimensions:{
-    type:String,
-    required:[true,"Dimensions are required"],
-    trim:true,
+  dimensions: {
+    type: String,
+    required: [true, "Dimensions are required"],
+    trim: true,
+    validate: {
+      validator: function(v) {
+        return /^(\d+x\d+\s?(inches|cm))$/.test(v);
+      },
+      message: props => `${props.value} is not a valid dimensions format! Use format numxnum inches or numxnum cm.`,
+    },
   },
-  year:{
-    type:Number,
-    required:[true,"Year is required"],
-    min:[1947,"Year must be greater than 1947"],
-    max:[new Date().getFullYear(),"Year cannot be greater than current year"],
-    trim:true,
+  year: {
+    type: Number,
+    required: [true, "Year is required"],
+    min: [1947, "Year must be greater than 1947"],
+    max: [new Date().getFullYear(), "Year cannot be greater than current year"],
+    trim: true,
   },
-
   isAgreedToTerms: {
     type: Boolean,
     required: [true, "Agreeing to terms is required"],
     default: false,
   },
-
-
 }, {
   timestamps: true,
 });

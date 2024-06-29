@@ -112,6 +112,22 @@ const getAllUsers= asyncHandler(async(req,res)=>{
     res.json(users);
 })
 
+const getUserById= asyncHandler(async(req,res)=>{
+  const loggedInUserId = req.user._id;
+  const userId = req.params.id;
+  if(loggedInUserId.toString() === userId.toString()){
+    res.status(400);
+    throw new Error("You cannot view your own profile through this endpoint. Use /api/users/profile instead.");
+  }
+  const user = await User.findById(userId).select('-password');
+  if(user){
+      res.json(user);
+  }else{
+      res.status(404);
+      throw new Error("User not found");
+  }
+})
+
 const getCurrentUserProfile= asyncHandler(async(req,res)=>{
     const currentUser= await User.findById(req.user._id);
     if(currentUser){
@@ -150,7 +166,7 @@ const updateCurrentUserProfile = asyncHandler(async (req, res) => {
         if (req?.files?.profilePicture?.length > 0) {
           try {
             const file = req.files.profilePicture[0];
-            const uploadedFile = await uploadOnCloudinary(file.path);
+            const uploadedFile = await uploadOnCloudinary(file.path, "profilePictures");
   
             currentUser.profilePicture = uploadedFile.secure_url;
           } catch (error) {
@@ -192,7 +208,7 @@ const updateCurrentUserProfile = asyncHandler(async (req, res) => {
       console.error("Error updating user profile:", error);
       res.status(500).json({ message: "Internal erver error", error: error.message });
     }
-  });
+});
   
 
 
@@ -201,6 +217,7 @@ export {
     loginUser,
     logoutUser, 
     getAllUsers, 
+    getUserById,
     getCurrentUserProfile,
     updateCurrentUserProfile,
 };

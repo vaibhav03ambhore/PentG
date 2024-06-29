@@ -13,16 +13,16 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const uploadOnCloudinary = async (localFilePath) => {
+const uploadOnCloudinary = async (localFilePath,folderOnCloudinary) => {
     
     try {
     
-        if (!localFilePath) {
+        if (!localFilePath ) {
             throw new Error("File path not provided");
         }
         const res = await cloudinary.uploader.upload(localFilePath, {
             resource_type: "auto",
-            folder: "PenGProject/profile_pictures"
+            folder: `PenGProject/${folderOnCloudinary}`,
         });
 
         console.log("File uploaded successfully", res.secure_url);

@@ -1,12 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
 import I1 from '../../assets/p4.jpg';
-// import axios from 'axios';
-// import { loadScript } from "@razorpay/sdk";
+
+import { useGetSpecificPaintingQuery } from '@/redux/api/paintings';
+import { useParams } from 'react-router';
 
 const CheckoutPage = () => {
-  // const [painting, setPainting] = useState();
-  const [count, setCount] = useState(1);
 
   const [shippingDetails, setShippingDetails] = useState({
     name: '',
@@ -18,42 +17,15 @@ const CheckoutPage = () => {
     mobile: '',
   });
 
-  // useEffect(() => {
-  //   const fetchPainting = async () => {
-  //     try {
-  //       const response = await axios.get('/painting/id'); // Replace with the actual API endpoint
-  //       setPainting(response.data);
-  //     } catch (error) {
-  //       console.error('Error fetching the painting details', error);
-  //     }
-  //   };
-  //   fetchPainting();
-  // }, []);
+  const {id}=useParams();
 
-  const painting = {
-    id: "1",
-    name: "Starry Night",
-    owner: "Vincent van Gogh",
-    image: I1,
-    price: 500
-  };  
-    
+  const {data:painting, isLoading} = useGetSpecificPaintingQuery(id);    
   
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setShippingDetails({ ...shippingDetails, [name]: value });
   };
 
-
-  const handleIncrement = () => {
-    setCount(count + 1);
-  };
-
-  const handleDecrement = () => {
-    if (count > 1) {
-      setCount(count - 1);
-    }
-  };
 
   // const handlePayment = async () => {
   //   const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
@@ -103,13 +75,8 @@ const CheckoutPage = () => {
           </div>
           <div className='flex flex-col gap-3'>
             <p><span className='text-yellow-500 italic mr-3'>Name:</span> {painting.name}</p>
-            <p><span className='text-yellow-500 italic mr-3' >Owner:</span> {painting.owner}</p>
-            <p><span className='text-yellow-500 italic mr-3'>Count:</span> 
-              <button onClick={handleDecrement} className="px-2 py-1 bg-gray-700 text-white rounded-md">-</button>
-              <span className="px-2">{count}</span>
-              <button onClick={handleIncrement} className="px-2 py-1 bg-gray-700 text-white rounded-md">+</button>
-            </p>
-            <p><span className='text-yellow-500 italic mr-3'>Price: </span> ₹{painting.price * count}</p>
+            <p><span className='text-yellow-500 italic mr-3' >Owner:</span> {painting.creator}</p>
+            <p><span className='text-yellow-500 italic mr-3'>Price: </span> ₹{painting.price}</p>
           </div>
         </div>
       </div>
