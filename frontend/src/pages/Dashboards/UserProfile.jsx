@@ -8,12 +8,19 @@ import { useParams } from 'react-router-dom';
 
 const UserProfile = () => {
   
-  const {id} = useParams();
- 
-  let isOwnProfile = false;
-  const {data,isError,isLoading} = useGetOthersProfileQuery(id);
-  if(isError || !data){
-    isOwnProfile = true;
+  const { id } = useParams();
+  let isOwnProfile;
+
+  const { data, error, isLoading } = useGetOthersProfileQuery(id);
+  
+  if (error) {
+    if (error.data.message === "UseProfileEndpointError") {
+      isOwnProfile = true;
+    } else if (error.data.message === "UserNotFoundError") {
+      return <div className="max-w-3xl mx-auto p-6 bg-gray-900 rounded-lg shadow-md mt-2">👤User not found!!</div>;
+    } else {
+      isOwnProfile=false;
+    }
   }
   
   return (
@@ -21,8 +28,7 @@ const UserProfile = () => {
       <div className="pb-1">
         {
           isOwnProfile?(<Profile />):(isLoading?(<p>Loading...</p>):<OtherUserProfile userInfo={data} />)
-        }
-        
+        }  
         
       </div>
     </div>

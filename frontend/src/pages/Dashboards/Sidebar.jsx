@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate,useParams } from 'react-router';
 
 import { useLogoutMutation } from '../../redux/api/users';
 import { useDispatch } from 'react-redux';
@@ -7,18 +7,17 @@ import { logout } from '../../redux/features/auth/authSlice';
 
 
 const Sidebar = ({ activeTab, setActiveTab }) => {
-  
-  
+  const {id}=useParams();
+  const userInfo=localStorage.getItem('userInfo')
+  const loggedInUserId = userInfo?JSON.parse(userInfo)._id:null;
+  const isOwnDashboard = id === loggedInUserId;
+  // console.log(loggedInUserId, id, isOwnDashboard)
   const [logoutApiCall] = useLogoutMutation();
-
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
 
   const logoutHandler =async () => {
-
     try{
-
       await logoutApiCall().unwrap();
       dispatch(logout());
       navigate('/login');
@@ -41,16 +40,20 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
           }`}>
           Paintings
         </button>
-        <button onClick={
-          () =>{
-            setActiveTab('logout');
-            logoutHandler();
-          } 
-        } className={`block w-full text-left mb-2 p-2 rounded-xl ${
-            activeTab === 'logout' ? 'bg-blue-600 ' : 'bg-purple-400 hover:bg-blue-600'
-          }`}>
-          Log out
-        </button>
+        {
+          isOwnDashboard && (
+            <button onClick={
+              () =>{
+                setActiveTab('logout');
+                logoutHandler();
+              } 
+            } className={`block w-full text-left mb-2 p-2 rounded-xl ${
+                activeTab === 'logout' ? 'bg-blue-600 ' : 'bg-purple-400 hover:bg-blue-600'
+              }`}>
+              Log out
+            </button>
+          )
+        }
       </nav>
     </div>
   );

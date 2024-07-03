@@ -112,21 +112,22 @@ const getAllUsers= asyncHandler(async(req,res)=>{
     res.json(users);
 })
 
-const getUserById= asyncHandler(async(req,res)=>{
+const getUserById = asyncHandler(async (req, res) => {
   const loggedInUserId = req.user._id;
   const userId = req.params.id;
-  if(loggedInUserId.toString() === userId.toString()){
-    res.status(400);
-    throw new Error("You cannot view your own profile through this endpoint. Use /api/users/profile instead.");
-  }
-  const user = await User.findById(userId).select('-password');
-  if(user){
+
+  if (loggedInUserId.toString() === userId.toString()) {
+    res.status(400).json({ message: "UseProfileEndpointError" });
+  } else {
+    const user = await User.findById(userId).select('-password');
+    if (user) {
       res.json(user);
-  }else{
-      res.status(404);
-      throw new Error("User not found");
+    } else {
+      res.status(404).json({ message: "UserNotFoundError" });
+    }
   }
-})
+});
+
 
 const getCurrentUserProfile= asyncHandler(async(req,res)=>{
     const currentUser= await User.findById(req.user._id);
@@ -209,6 +210,22 @@ const updateCurrentUserProfile = asyncHandler(async (req, res) => {
       res.status(500).json({ message: "Internal erver error", error: error.message });
     }
 });
+
+const getUsernameById = asyncHandler(async(req,res)=>{
+  const userId = req.params.id;
+  try{
+    const user=await User.findById(userId);
+    console.log(user);
+    if(!user){
+      res.status(404).json({message:"User not found"});
+    }else{
+      res.json({username:user.username});
+    }
+  }catch(error){
+    console.error("Error getting username by id:", error);
+    res.status(500).json({ message: "Internal Server Error", error: error.message });
+  }
+})
   
 
 
@@ -220,4 +237,5 @@ export {
     getUserById,
     getCurrentUserProfile,
     updateCurrentUserProfile,
+    getUsernameById,
 };

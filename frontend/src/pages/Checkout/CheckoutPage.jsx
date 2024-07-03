@@ -1,6 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
-import I1 from '../../assets/p4.jpg';
+import React, { useState} from 'react';
 
 import { useGetSpecificPaintingQuery } from '@/redux/api/paintings';
 import { useParams } from 'react-router';
@@ -66,23 +65,23 @@ const CheckoutPage = () => {
   return (
     <div className="min-h-screen bg-gray-900 flex flex-col gap-4 md:flex-row p-8 w-full">
       {/* <h1 className="text-3xl mb-6">Checkout</h1> */}
-      <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-6 w-full">
-        {/* <h2 className="text-lg mb-4">Painting Summary</h2> */}
+      <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-6 w-full flex flex-col justify-center items-center">
+        <h1 className="text-xl text-cyan-400 font-sans font-semibold mb-4 md:mb-10">Painting Summary</h1>
         <div className="flex items-center flex-col gap-5 space-x-4">
-          <div className="w-60 h-auto md:w-80 md:h-auto border-r-2 bg-slate-500 p-4 ">
+          <div className="w-60 h-auto md:w-80 md:h-auto border-r-2 bg-slate-600 p-4 ">
             <img src={painting.image} alt={painting.name} className="" />
 
           </div>
           <div className='flex flex-col gap-3'>
             <p><span className='text-yellow-500 italic mr-3'>Name:</span> {painting.name}</p>
-            <p><span className='text-yellow-500 italic mr-3' >Owner:</span> {painting.creator}</p>
+            <p><span className='text-yellow-500 italic mr-3' >Creator:</span> {painting.creator.username}</p>
             <p><span className='text-yellow-500 italic mr-3'>Price: </span> ₹{painting.price}</p>
           </div>
         </div>
       </div>
       <div className="bg-gray-800 p-6 rounded-lg shadow-lg mb-6 w-full ">
         <div className='flex flex-col items-center'>
-          <h2 className="text-lg mb-4 text-cyan-400 ">Shipping Details</h2> 
+          <h2 className="text-xl font-sans font-semibold  mb-4 text-cyan-400 ">Shipping Details</h2> 
         </div>
         <form className="space-y-4">
           <div>

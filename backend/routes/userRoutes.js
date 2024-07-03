@@ -1,7 +1,7 @@
 import express from 'express';
 
 //controller
-import {createUser, loginUser, logoutUser, getAllUsers, getCurrentUserProfile, updateCurrentUserProfile, getUserById} from '../controllers/userController.js';
+import {createUser, loginUser, logoutUser, getAllUsers, updateCurrentUserProfile, getUserById,getUsernameById} from '../controllers/userController.js';
 
 //middlewares
 import {authenticate, authorizeAdmin} from '../middleware/authMiddleware.js';
@@ -13,7 +13,8 @@ router.route('/').post(createUser).get(authenticate,authorizeAdmin, getAllUsers)
 router.post('/auth',loginUser);
 router.post('/logout',logoutUser);
 router.get('/:id/profile',authenticate,getUserById);
-router.route('/profile').get(authenticate,getCurrentUserProfile).put(authenticate,upload.fields([
+router.get(':id/username',authenticate,getUsernameById);
+router.route('/profile').put(authenticate,upload.fields([
     {
         name: 'profilePicture',
         maxCount: 1

@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import {useCreatePaintingMutation} from '@/redux/api/paintings';
 
 const PaintingForm = () => {
+  const [createPainting, { isLoading }] = useCreatePaintingMutation();
+
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -8,21 +11,49 @@ const PaintingForm = () => {
     dimensions: '',
     yearCreated: '',
     price: '',
-    image: '',
+    image: null,
     agreeTerms: false
   });
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prevData => ({
-      ...prevData,
-      [name]: type === 'checkbox' ? checked : value
-    }));
+    const { name, value, type,files, checked } = e.target;
+    if(type==='file'){
+      setFormData(prevData=>({
+        ...prevData,
+        [name]: files[0]
+      }))
+    }else{
+      setFormData(prevData => ({
+        ...prevData,    
+        [name]: type === 'checkbox' ? checked :value
+      }));
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    // Handle form submission here
+    
+    try{
+      const formDataToSend = new FormData();
+      for (let key in formData) {
+        formDataToSend.append(key, formData[key]);
+      }
+      await createPainting(formDataToSend);
+
+      setFormData({
+        name: '',
+        description: '',
+        medium: '',
+        dimensions: '',
+        yearCreated: null,
+        price: null,
+        image: null,
+        agreeTerms: false
+      });
+      
+    }catch(error){
+      console.error(error);
+    }
   };
 
   return (
@@ -70,7 +101,13 @@ const PaintingForm = () => {
           <span className="text-sm text-gray-300">I certify that I am the creator of this painting and have the right to upload and sell it.</span>
         </label>
       </div>
-      <button type="submit" className="bg-blue-500 hover:bg-blue-600 font-bold py-2 px-4 rounded-lg">Submit</button>
+      {
+        isLoading?(
+          <button type="submit" className="bg-blue-500 hover:bg-blue-600 font-bold py-2 px-4 rounded-lg">Submiting</button>
+        ):(
+          <button type="submit" className="bg-blue-500 hover:bg-blue-600 font-bold py-2 px-4 rounded-lg">Submit</button>
+        )
+      }
     </form>
   );
   

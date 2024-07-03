@@ -1,13 +1,14 @@
 import Painting from '../models/painting.js';
 import asyncHandler from '../middleware/asyncHandler.js';
 import { uploadOnCloudinary } from '../utils/cloudinary.js';
-
+import User from '../models/User.js';
 
 const getSpecificPainting = asyncHandler(async(req,res)=>{
     try{
         const {id}=req.params;
-        const secificPainting = await Painting.findById(id);
+        const secificPainting = await Painting.findById(id).populate('creator');
         
+        // console.log(secificPainting)
         res.json(secificPainting);
 
     }catch(error){
@@ -17,7 +18,9 @@ const getSpecificPainting = asyncHandler(async(req,res)=>{
 
 const getAllPaintings= asyncHandler(async(req,res)=>{
     try{
-        const paintings = await Painting.find({});
+        const paintings = await Painting.find({}).populate(
+            'creator'   //populate creator field with actual user document
+        );
 
         res.json(paintings);
     }catch(err){
@@ -27,10 +30,17 @@ const getAllPaintings= asyncHandler(async(req,res)=>{
 
 const getAllSoldPaintingsByCreator= asyncHandler(async(req,res)=>{
     const {id:creatorId} = req.params;
-    // console.log(creatorId);
+    
     try{
         const paintings = await Painting.find({creator: creatorId, status:'Sold'});
-        res.json(paintings);
+        const user= await User.findById({_id:creatorId});
+        if(!user){
+            return res.status(404).json({message:"User not found"});
+        }else if(!paintings){
+            return res.status(404).json({message:"No sold paintings found"});
+        }
+        else res.json(paintings);
+
     }catch(err){
         console.error(err);
         res.status(500).json({error:err.message})
@@ -38,9 +48,10 @@ const getAllSoldPaintingsByCreator= asyncHandler(async(req,res)=>{
 })
 
 const getAllForSalePaintingsByCreator= asyncHandler(async(req,res)=>{
-    const {creatorId} = req.params;
+    const {id:creatorId} = req.params;
     try{
         const paintings = await Painting.find({creator: creatorId, status: "For Sale"});
+        // console.log(paintings)
         res.json(paintings);
     }catch(err){
         res.status(500).json({error:err.message})
@@ -72,29 +83,37 @@ const createPainting = asyncHandler(async(req,res)=>{
     }else console.log("No painting image uploaded");
 
     try{
+        // console.log(paintingData);
         const newPainting = await Painting.create(paintingData);
 
         res.json(newPainting);
     }catch(err){
-        res.status(500).json("error in saving into db ",{error:err.message})
+        res.status(500).json({message:err.message+"Error saving painting into db"});
     }
 })
 
-const updatePainting = asyncHandler(async(req,res)=>{
-    try{
-        const {id}=req.params;
-        const updatedPainting = await Painting.findByIdAndUpdate(id,req.body,{new:true});
-
-        if(!updatedPainting){
-            res.status(404).json('Painting not found');
+const updatePainting = asyncHandler(async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updatedPainting = await Painting.findByIdAndUpdate(id, req.body,
+        {
+            new: true,
+            runValidators: true
         }
-        res.json(updatedPainting);
-
-    }catch(err){
-        res.status(500).json({error:err.message})
+      );
+  
+      if (!updatedPainting) {
+        return res.status(404).json('Painting not found');
+      }
+  
+      res.json(updatedPainting);
+    } catch (error) {
+      console.error("Error updating painting:", error.message);
+      res.status(500).json(error.message);
     }
-})
-
+});
+  
+  
 
 const deletePainting = asyncHandler(async(req,res)=>{
     try{

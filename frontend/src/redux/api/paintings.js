@@ -27,7 +27,7 @@ const paintingApiSlice=apiSlice.injectEndpoints({
         }),
 
         updatePainting:builder.mutation({
-            query:(id,updatedPainting)=>({
+            query:({id,updatedPainting})=>({
                 url:`${PAINTINGS_URL}/update-painting/${id}`,
                 method:'PUT',
                 body:updatedPainting

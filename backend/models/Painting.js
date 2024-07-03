@@ -49,10 +49,10 @@ const paintingSchema = new mongoose.Schema({
       validator: function(v) {
         return /^(\d+x\d+\s?(inches|cm))$/.test(v);
       },
-      message: props => `${props.value} is not a valid dimensions format! Use format numxnum inches or numxnum cm.`,
+      message: props => `${props.value} is not in a valid format! (valid ex: 12x10 inches, 12x10 cm)`,
     },
   },
-  year: {
+  yearCreated: {
     type: Number,
     required: [true, "Year is required"],
     min: [1947, "Year must be greater than 1947"],
