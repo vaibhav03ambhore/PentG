@@ -9,7 +9,7 @@ const Collection = () => {
     if (isError) return <p>error retrieving paintings data</p>;
     if (!paintingData) return <p>No paintings found</p>;
   return (
-    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 md:mx-6">
       {paintingData?.map((painting) => (
         <Link to={`/paintings/${painting._id}`} key={painting._id}>
           <Card className="hover:bg-opacity-20 hover:bg-purple-500 transition-all duration-300 transform hover:scale-105 border border-slate-600">

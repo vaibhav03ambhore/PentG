@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { FaEdit } from 'react-icons/fa';
-import { useGetSpecificPaintingQuery, useUpdatePaintingMutation } from '@/redux/api/paintings';
+import { useGetSpecificPaintingQuery, useUpdatePaintingMutation,useDeletePaintingMutation } from '@/redux/api/paintings';
 import { toast } from 'react-toastify';
 
 const PaintingDetail = () => {
+  const Navigate=useNavigate();
   const { id: pid } = useParams();
   const { data: painting, isLoading, error } = useGetSpecificPaintingQuery(pid);
   const [updatePainting,{isLoading:updateLoading,error:updateError}] = useUpdatePaintingMutation();
+
+  const [deletePainting,{isLoading:deleteLoading,error:delteError}] = useDeletePaintingMutation();
 
   const [editMode, setEditMode] = useState(null);
   const [formData, setFormData] = useState({
@@ -74,6 +77,16 @@ const PaintingDetail = () => {
 
   const ownPainting = loggedInUserId === painting?.creator?._id;
 
+  const deletePaintingHandle = async () => {
+    try{
+      await deletePainting(pid);
+      toast.success('Painting Deleted Successfully');
+      Navigate('/paintings');
+    }catch(error){
+      console.error(error);
+      toast.error('Error Deleting Painting');
+    }
+  }
   return (
     <div className="w-full h-screen flex justify-center items-center ">
       <div className="flex flex-col md:flex-row items-center gap-10 justify-between bg-gray-800 shadow-md rounded-lg p-4">
@@ -211,11 +224,11 @@ const PaintingDetail = () => {
                     {updateLoading ? 'Saving...' : 'Save Changes'}
                   </button>
                 )}
-                <button className="bg-red-500  text-sm md:text-md hover:bg-red-700 font-bold py-2 px-4 rounded">
+                <button onClick={deletePaintingHandle} className="bg-red-500  text-sm md:text-md hover:bg-red-700 font-bold py-2 px-4 rounded">
                   Delete Painting
                 </button>
               </div>
-            ) : (
+            ) : (painting.status!=='Sold'&&
               <div className="text-center sm:text-left mt-6">
                 <Link to={`/paintings/${pid}/checkout`}>
                   <button className="bg-blue-500 hover:bg-blue-700  text-sm md:text-md font-bold py-2 px-4 rounded">

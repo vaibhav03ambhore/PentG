@@ -9,6 +9,8 @@ import Body from "./pages/HomePage/Body/Body.jsx";
 import PaintingDetail from "./pages/Paintings/PaintingDetails/PaintingDetail.jsx";
 import PaintingForm from "./pages/Paintings/UploadPainting/PaintingForm.jsx";
 import CheckoutPage from "./pages/Checkout/CheckoutPage.jsx";
+import Order from "./pages/Orders/Order.jsx";
+import PlaceOrder from "./pages/Orders/PlaceOrder.jsx";
 import PrivateRoutes from "./my-components/PrivateRoutes.jsx";
 
 
@@ -18,14 +20,17 @@ const router = createBrowserRouter(
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
     
-        <Route path="/add-painting" element ={<PaintingForm/>} />
         <Route path="/paintings" element={<Body/>} />
         <Route path="/paintings/:id" element={<PaintingDetail />} />
-        <Route path="/paintings/:id/checkout" element={ <CheckoutPage />} />
         <Route index={true} path="/" element={<Home />} />
 
         <Route path="" element={<PrivateRoutes/>}>
           <Route path="/:id/profile" element ={<UserDashboard/>} />
+          <Route path="/add-painting" element ={<PaintingForm/>} />
+          <Route path="/paintings/:id/checkout" element={ <CheckoutPage />} />
+          <Route path="/order/:id" element={<Order/>} />
+          <Route path="/place-order/" element={<PlaceOrder/>} />
+          
         </Route>
         
       </Route>
