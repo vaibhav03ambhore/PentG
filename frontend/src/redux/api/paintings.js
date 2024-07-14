@@ -3,7 +3,7 @@ import { PAINTINGS_URL } from "../constants";
 
 const paintingApiSlice=apiSlice.injectEndpoints({
     endpoints:(builder)=>({
-        getAllPaintings:builder.query({
+        getAllPaintingsToSell:builder.query({
             query:()=>`${PAINTINGS_URL}/all-paintings`
         }),
 
@@ -48,7 +48,7 @@ const paintingApiSlice=apiSlice.injectEndpoints({
 
 
 export const {
-    useGetAllPaintingsQuery,
+    useGetAllPaintingsToSellQuery,
     useCreatePaintingMutation,
     useGetAllSoldPaintingsByCreatorQuery,
     useGetAllForSalePaintingsByCreatorQuery,

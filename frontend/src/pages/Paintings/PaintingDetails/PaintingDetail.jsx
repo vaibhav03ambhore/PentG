@@ -70,7 +70,7 @@ const PaintingDetail = () => {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error fetching painting details: {error.message}</div>;
   if (!painting) return <div>Painting not found</div>;
-
+  if(delteError) return <div>Error Deleting Painting</div>
   if(updateError){
     toast.error(updateError.data);
   }
@@ -88,9 +88,9 @@ const PaintingDetail = () => {
     }
   }
   return (
-    <div className="w-full h-screen flex justify-center items-center ">
-      <div className="flex flex-col md:flex-row items-center gap-10 justify-between bg-gray-800 shadow-md rounded-lg p-4">
-        <div >
+    <div className="w-full h-screen flex justify-center items-center p-4">
+      <div className="flex flex-col md:flex-row items-center justify-around bg-gray-800 shadow-md rounded-lg p-4 w-full h-full">
+        <div className='p-2 flex flex-col items-center justify-center ' >
           <div className="flex gap-2 justify-center">
             <h1 className="text-lg underline font-semibold mb-6 mt-5 text-center md:text-2xl">
               {editMode === 'name' ? (
@@ -113,18 +113,18 @@ const PaintingDetail = () => {
             )}
           </div>
 
-          <div className="  bg-slate-600 p-2 mb-2  w-[400px] h-[300px]">
+          <div className="  bg-slate-600 p-2 mb-2  w-[350px] h-[350px]">
             <img
-              className="w-full h-full  object-contain"
+              className="w-full h-full object-contain"
               src={painting.image}
               alt={painting.name}
             />
           </div>
         </div>
-        <div>
-          <div className="overflow-x-auto p-2 text-sm sm:text-md">
+        <div className='md:ml-4 p-2'>
+          <div className="p-2 text-sm sm:text-md overflow-x-auto">
             <h1 className='text-lg md:text-xl font-bold text-yellow-400 mb-4'>Painting Detatils👇</h1>
-            <table className="min-w-full table-auto rounded-lg">
+            <table className=" min-w-full divide-y divide-gray-200 rounded-lg table-auto">
               <tbody className=''>
                 <tr className="border-b border-gray-500 ">
                   <td className="px-4 py-2 font-semibold bg-slate-700">Creator</td>
@@ -153,13 +153,13 @@ const PaintingDetail = () => {
                 </tr>
                 <tr className="border-b border-gray-500">
                   <td className="px-4   py-2 font-semibold bg-slate-700">Description</td>
-                  <td className="px-4  py-2 bg-slate-900">
+                  <td className="px-4  py-2 bg-slate-900 w-full sm:w-1/2">
                     {editMode === 'description' ? (
                       <textarea
                         name="description"
                         value={formData.description}
                         onChange={handleChange}
-                        className="bg-gray-700 text-white px-2 py-1 outline-none border-b border-gray-500"
+                        className="bg-gray-700 px-2 py-1 outline-none border-b border-gray-500"
                       />
                     ) : (
                       ownPainting?formData.description:painting.description
@@ -225,7 +225,7 @@ const PaintingDetail = () => {
                   </button>
                 )}
                 <button onClick={deletePaintingHandle} className="bg-red-500  text-sm md:text-md hover:bg-red-700 font-bold py-2 px-4 rounded">
-                  Delete Painting
+                  {deleteLoading?"deleting..":"Delete Painting"} 
                 </button>
               </div>
             ) : (painting.status!=='Sold'&&

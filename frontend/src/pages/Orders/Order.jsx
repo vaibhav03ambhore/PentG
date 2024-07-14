@@ -1,88 +1,92 @@
-import { Link } from "react-router-dom";
+import { Link,useParams } from "react-router-dom";
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
-import React from 'react';
+import React,{useEffect} from 'react';
+import { toast } from "react-toastify";
 
-const mockOrder = {
-  shippingDetails: {
-    fullName: "vaibhav ity",
-    village: "uti",
-    city: "une",
-    state: "mhas",
-    pincode: 123465,
-    mobile: 1212121212
-  },
-  paymentResult: {
-    id: "PAYMENT_ID",
-    status: "paid",
-    update_time: "2024-07-06T12:34:56Z",
-    email_address: "payer@example.com"
-  },
-  _id: "668d1761e08e48d513c78ac4",
-  user: {
-    socialMediaLinks: {
-      facebook: "",
-      twitter: "",
-      instagram: ""
-    },
-    _id: "6689517d5d25daaf36b51af4",
-    profilePicture: " https://th.bing.com/th?id=OIP.Aa3B6uwjU0BFoZrAQG7GzQHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&dpr=1.4&pid=3.1&rm=2",
-    username: "john_doe",
-    email: "vaibhav@gmail.com",
-    phoneNumber: "",
-    password: "$2a$10$vM692VmV/eh9c4KO52TqEOz80WHv9MuaEBtd.6GfAbHunO9SL93ZG",
-    createdAt: "2024-07-06T14:15:25.809Z",
-    updatedAt: "2024-07-06T14:15:25.809Z",
-    __v: 0
-  },
-  orderItem: {
-    _id: "668160767656291365ad76ba",
-    name: "Mona lsidlfskdf",
-    description: "sdfsddddddddddddddd",
-    creator: "6681480f9bed9cb9902f0af4",
-    price: 343,
-    image: "https://res.cloudinary.com/vaibhavdada/image/upload/v1719754837/PenGProject/Paintings/ohfxrdgd0r1rkampjtne.png",
-    status: "Sold",
-    medium: "Acrylic",
-    dimensions: "22x11 cm",
-    yearCreated: 2000,
-    isAgreedToTerms: false,
-    createdAt: "2024-06-30T13:41:10.676Z",
-    updatedAt: "2024-06-30T13:41:10.676Z",
-    __v: 0
-  },
-  shippingCharge: 50,
-  totalPrice: 393,
-  paymentMethod: "PayPal",
-  isPaid: false,
-  isDelivered: false,
-  createdAt: "2024-07-09T10:56:33.230Z",
-  updatedAt: "2024-07-09T11:21:11.163Z",
-  __v: 0,
-  paidAt: null,
-  deliveredAt: null
-}
+import { useGetOrderByIdQuery } from "@/redux/api/order";
+import { useUpdateOrderToDeliveredMutation } from "@/redux/api/order";
+import { useUpdateOrderToPaidMutation } from "@/redux/api/order";
+import { useGetPayPalClientIdQuery } from "@/redux/api/order";
+import { useSelector } from "react-redux";
 
 const Order = () => {
-  const [{ isPending }] = usePayPalScriptReducer();
 
-  function onApprove() {
-    console.log('Payment approved');
+  const {id:orderId}=useParams();
+
+  const {data:order,isLoading,error,refetch}=useGetOrderByIdQuery(orderId)
+  const {data:paypal,isLoading:paypalLoading,error:paypalError}=useGetPayPalClientIdQuery();
+  const [updateOrderToPaid]=useUpdateOrderToPaidMutation();
+  const [updateOrderToDelivered,{isLoading:loadingDeliver}]=useUpdateOrderToDeliveredMutation();
+
+  const [{ isPending },paypalDispatch] = usePayPalScriptReducer();
+
+  const {userInfo}=useSelector((state)=>state.auth);
+  const paintingOwnerId=order?.orderItem?.creator;
+
+  const loggedInUserId=userInfo?._id;
+  
+  // console.log(order);
+  // console.log(loggedInUserId+" "+paintingOwnerId);
+
+  useEffect(() => {
+    if (!paypalError && !paypalLoading && paypal.clientId) {
+      const loadingPaPalScript = async () => {
+        paypalDispatch({
+          type: "resetOptions",
+          value: {
+            "client-id": paypal.clientId,
+            currency: "USD",
+          },
+        });
+        paypalDispatch({ type: "setLoadingStatus", value: "pending" });
+      };
+
+      if (order && !order.isPaid) {
+        if (!window.paypal) {
+          loadingPaPalScript();
+        }
+      }
+    }
+  }, [paypalError,paypalLoading, order, paypal, paypalDispatch]);
+
+  function onApprove(data, actions) {
+    return actions.order.capture().then(async function (details) {
+      try {
+        await updateOrderToPaid({ orderId, details });
+        console.log(orderId,details)
+        refetch();
+        toast.success("Order is paid");
+      } catch (error) {
+        toast.error(error?.data?.message || error.message);
+        console.log("thhiss errr",error);
+      }
+    });
   }
 
-  function createOrder() {
-    console.log('Created order');
+  function createOrder(data, actions) {
+    return actions.order
+      .create({
+        purchase_units: [{ amount: { value: 1 } }],
+      })
+      .then((orderID) => {
+        return orderID;
+      });
   }
 
   function onError(err) {
-    console.error(err.message);
+    console.log("onError::",err);
+    toast.error(err.message);
   }
 
   const deliverHandler = async () => {
-    console.log('Delivered');
+    await updateOrderToDelivered(orderId);
+    refetch();
   };
 
-  const order = mockOrder;
-  const userInfo = { isAdmin: true };
+
+  if(error)return(<div className="m-10 p-4 text-lg">try later..</div>);
+  if(isLoading) return(<div className="m-10 p-4 text-lg">Loading...</div>)
+  if(!order) return(<div className="m-10 p-4 text-lg">no orders found!</div>)
 
   return (
     <div className="p-4 m-6 flex flex-col md:flex-row gap-4 justify-between ">
@@ -120,15 +124,21 @@ const Order = () => {
 
         <div className="border border-gray-700 p-4 rounded-lg">
           <h2 className="text-xl text-yellow-500 font-bold mb-2 text-center">Shipping</h2>
-          <p className="mb-4 text-green-200 "><strong className="text-gray-200">Order:</strong> {order._id}</p>
+          <p className="mb-4 text-green-200 "><strong className="text-gray-200">Order ID:</strong> {order._id}</p>
           <p className="mb-4 text-green-200 "><strong className="text-gray-200">Full Name:</strong> {order.shippingDetails.fullName}</p>
           <p className="mb-4 text-green-200 "><strong className="text-gray-200">Address:</strong> {order.shippingDetails.village}, {order.shippingDetails.city} {order.shippingDetails.pincode}, {order.shippingDetails.state}</p>
           <p className="mb-4 text-green-200 "><strong className="text-gray-200">Method:</strong> {order.paymentMethod}</p>
           {order.isPaid ? (
-            <div className="text-green-500">Paid on {order.paidAt}</div>
+            <div className="text-green-500 mb-4">Paid on {order.paidAt}</div>
           ) : (
-            <div className="text-red-500">Not paid</div>
+            <div className="text-red-500 mb-4">Not paid</div>
           )}
+          {order.isDelivered ?(
+            <div className="text-green-500">Delivered on {order.deliveredAt}</div>
+           ):(
+            <div className="text-red-500">Not Delivered</div>
+           )
+          }
         </div>
       </div>
 
@@ -162,14 +172,14 @@ const Order = () => {
               )}
             </div>
           )}
-          {userInfo && order.isPaid && !order.isDelivered && (
+          {paintingOwnerId==loggedInUserId && order.isPaid && !order.isDelivered && (
             <div>
               <button
                 type="button"
                 className="bg-pink-500 text-white w-full py-2 mt-2 rounded-lg"
                 onClick={deliverHandler}
               >
-                Mark As Delivered
+                {loadingDeliver?"marking..":"Mark As Delivered"}
               </button>
             </div>
           )}

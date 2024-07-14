@@ -9,10 +9,10 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Painting from "./Painting";
-import { useGetAllPaintingsQuery } from '@/redux/api/paintings';
+import { useGetAllPaintingsToSellQuery } from '@/redux/api/paintings';
 
 const Carousell = () => {
-  const { data: paintings, isLoading } = useGetAllPaintingsQuery();
+  const { data: paintings, isLoading } = useGetAllPaintingsToSellQuery();
   
   return (
     <div className="flex justify-center mt-20 mb-16">

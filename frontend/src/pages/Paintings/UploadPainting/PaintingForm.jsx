@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import {useCreatePaintingMutation} from '@/redux/api/paintings';
+import { useLoaderData, useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
+
 
 const PaintingForm = () => {
   const [createPainting, { isLoading }] = useCreatePaintingMutation();
@@ -15,6 +18,8 @@ const PaintingForm = () => {
     agreeTerms: false
   });
 
+  const navigate=useNavigate();
+
   const handleChange = (e) => {
     const { name, value, type,files, checked } = e.target;
     if(type==='file'){
@@ -29,6 +34,7 @@ const PaintingForm = () => {
       }));
     }
   };
+  
 
   const handleSubmit = async(e) => {
     e.preventDefault();
@@ -50,6 +56,9 @@ const PaintingForm = () => {
         image: null,
         agreeTerms: false
       });
+      toast.success('painting uploaded successfully!');
+    
+      navigate('/paintings');
       
     }catch(error){
       console.error(error);
@@ -63,7 +72,7 @@ const PaintingForm = () => {
       </div>
       <div className="mb-4">
         <label htmlFor="name" className="block font-semibold mb-2 text-sm md:text-md ">Name:</label>
-        <input type="text" id="name" name="name" placeholder="e.g Vaibhav Ambhore" value={formData.name} onChange={handleChange} required className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-blue-400 text-sm md:text-md" />
+        <input type="text" id="name" name="name" placeholder="e.g Mona Lisa" value={formData.name} onChange={handleChange} required className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-blue-400 text-sm md:text-md" />
       </div>
       <div className="mb-4">
         <label htmlFor="description" className="block font-semibold mb-2 text-sm md:text-md">Description:</label>

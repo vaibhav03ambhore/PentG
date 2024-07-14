@@ -16,12 +16,15 @@ const getSpecificPainting = asyncHandler(async(req,res)=>{
     }
 })
 
-const getAllPaintings= asyncHandler(async(req,res)=>{
+const getAllPaintingsToSell= asyncHandler(async(req,res)=>{
     try{
-        const paintings = await Painting.find({}).populate(
+        const paintings = await Painting.find({status:'For Sale'}).populate(
             'creator'   //populate creator field with actual user document
         );
-
+        if(!paintings || paintings.length===0){
+            res.status(404);
+            throw new Error("No paintings found");
+        }
         res.json(paintings);
     }catch(err){
         res.status(500).json({error:err.message})
@@ -133,7 +136,7 @@ const deletePainting = asyncHandler(async(req,res)=>{
 
 export {
     createPainting,
-    getAllPaintings,
+    getAllPaintingsToSell,
     getSpecificPainting,
     updatePainting,
     deletePainting,

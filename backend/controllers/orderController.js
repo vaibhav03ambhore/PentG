@@ -42,7 +42,7 @@ const createOrder = asyncHandler(async(req,res)=>{
 const getOrderById = asyncHandler(async(req,res)=>{
     try{
         const order = await Order.findById(req.params.id).populate('user').populate('orderItem');
-        if(!order){
+        if(!order || !order.orderItem){
             res.status(404);
             throw new Error("Order not found");
         }
@@ -54,11 +54,38 @@ const getOrderById = asyncHandler(async(req,res)=>{
 
 const getUserOrders = asyncHandler(async(req,res)=>{
     const userId = req.user._id;
+    // console.log(userId)
     try{
-        const orders = await Order.find({user:userId}).populate('user').populate('orderItem');
-        if(!orders){
+        const orders = await Order.find({user:userId}).populate('user').populate({path:'orderItem',populate:{path:'creator'}});
+        // console.log(orders)
+        if(!orders || orders.length===0){
             res.status(404);
-            throw new Error("No orders found");
+            throw new Error("No purchases/orders found");
+        }
+        res.json(orders);
+    }catch(error){
+        res.status(500).json({error:error.message})
+    }
+})
+
+const getUserSells= asyncHandler(async(req,res)=>{
+    const userId = req.user._id;
+    try{
+        const orders = await Order.find({
+                orderItem:{
+                    $in:await Painting.find({
+                    creator:userId
+                    }).select('_id')
+                }
+            }).populate('user')
+            .populate({
+                path:'orderItem',
+                populate:{path:'creator'}
+            });
+
+        if(!orders || orders.length===0){
+            res.status(404);
+            throw new Error("No sells found");
         }
         res.json(orders);
     }catch(error){
@@ -75,6 +102,8 @@ const updateOrderToPaid = asyncHandler(async(req,res)=>{
             throw new Error("Order not found");
         }
         order.isPaid = true;
+        const painting = await Painting.findById(order.orderItem);
+        painting.status = "Sold";
         order.paidAt = Date.now();
         order.paymentResult = {
             id:req.body.id,
@@ -83,6 +112,8 @@ const updateOrderToPaid = asyncHandler(async(req,res)=>{
             email_address:req.body.payer.email_address
         }
         const updatedOrder = await order.save();
+        const updatedPainting = await painting.save();
+        // console.log(updatedPainting)
         res.json(updatedOrder);
     }catch(error){
         res.status(500).json({error:error.message})
@@ -114,6 +145,7 @@ export {
     createOrder,
     getOrderById,
     getUserOrders,
+    getUserSells,
     updateOrderToPaid,
     updateOrderToDelivered
 }

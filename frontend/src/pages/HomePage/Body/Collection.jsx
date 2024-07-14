@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { useGetAllPaintingsQuery } from '@/redux/api/paintings';
+import { useGetAllPaintingsToSellQuery } from '@/redux/api/paintings';
 
 const Collection = () => {
-    const { data: paintingData, isLoading,isError } = useGetAllPaintingsQuery();
-    if (isLoading ) return <p>Loading...</p>; 
-    if (isError) return <p>error retrieving paintings data</p>;
-    if (!paintingData) return <p>No paintings found</p>;
+    const { data: paintingData, isLoading,isError,error} = useGetAllPaintingsToSellQuery();
+    if (isLoading ) return <div>Loading...</div>; 
+    if(error) return(<div>{error.data.error}</div>)
+    if (isError) return(<div>Error in feching data!! </div>);
   return (
     <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 md:mx-6">
       {paintingData?.map((painting) => (

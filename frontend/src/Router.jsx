@@ -12,7 +12,7 @@ import CheckoutPage from "./pages/Checkout/CheckoutPage.jsx";
 import Order from "./pages/Orders/Order.jsx";
 import PlaceOrder from "./pages/Orders/PlaceOrder.jsx";
 import PrivateRoutes from "./my-components/PrivateRoutes.jsx";
-
+import OrderList from "./pages/Dashboards/OrderList.jsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -30,7 +30,7 @@ const router = createBrowserRouter(
           <Route path="/paintings/:id/checkout" element={ <CheckoutPage />} />
           <Route path="/order/:id" element={<Order/>} />
           <Route path="/place-order/" element={<PlaceOrder/>} />
-          
+          <Route path="/my-orders/" element={<OrderList/>}/>
         </Route>
         
       </Route>

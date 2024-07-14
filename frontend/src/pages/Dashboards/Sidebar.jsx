@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate,useParams } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import { useLogoutMutation } from '../../redux/api/users';
 import { useDispatch } from 'react-redux';
@@ -40,6 +41,15 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
           }`}>
           Paintings
         </button>
+        {
+          isOwnDashboard&&(
+            <Link to={`/my-orders`}>
+              <button className={`block w-full text-left mb-2 p-2 rounded-xl bg-purple-400 hover:bg-violet-800`}>
+                Orders
+              </button>
+          </Link>
+          )
+        }
         {
           isOwnDashboard && (
             <button onClick={
