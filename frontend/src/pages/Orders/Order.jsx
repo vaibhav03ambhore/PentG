@@ -25,9 +25,6 @@ const Order = () => {
 
   const loggedInUserId=userInfo?._id;
   
-  // console.log(order);
-  // console.log(loggedInUserId+" "+paintingOwnerId);
-
   useEffect(() => {
     if (!paypalError && !paypalLoading && paypal.clientId) {
       const loadingPaPalScript = async () => {
@@ -58,7 +55,6 @@ const Order = () => {
         toast.success("Order is paid");
       } catch (error) {
         toast.error(error?.data?.message || error.message);
-        console.log("thhiss errr",error);
       }
     });
   }
@@ -66,7 +62,7 @@ const Order = () => {
   function createOrder(data, actions) {
     return actions.order
       .create({
-        purchase_units: [{ amount: { value: 1 } }],
+        purchase_units: [{ amount: { value:order?.totalPrice } }],
       })
       .then((orderID) => {
         return orderID;
@@ -112,7 +108,7 @@ const Order = () => {
                   />
                 </td>
                 <td className="p-2 text-center">
-                  <Link to={`/painting/${order.orderItem._id}`} className="hover:underline">{order.orderItem.name}</Link>
+                  <Link to={`/paintings/${order.orderItem._id}`} className="hover:underline">{order.orderItem.name}</Link>
                 </td>
                 <td className="p-2 text-center">${order.orderItem.price}</td>
                 <td className="p-2 text-center">${order.shippingCharge}</td>

@@ -12,6 +12,7 @@ const paintingSchema = new mongoose.Schema({
   description: {
     type: String,
     required: [true, "Description is required"],
+    minLength:[10, "Description must be at least 10 characters"],
     maxlength: [2000, "Description cannot exceed 2000 characters"],
     trim: true,
   },
@@ -33,7 +34,7 @@ const paintingSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["For Sale", "Sold"],
+    enum: ["For Sale", "Sold","Ordered"],
     default: "For Sale",
   },
   medium: {

@@ -44,7 +44,7 @@ const PaintingForm = () => {
       for (let key in formData) {
         formDataToSend.append(key, formData[key]);
       }
-      await createPainting(formDataToSend);
+      await createPainting(formDataToSend).unwrap();
 
       setFormData({
         name: '',
@@ -61,7 +61,7 @@ const PaintingForm = () => {
       navigate('/paintings');
       
     }catch(error){
-      console.error(error);
+      toast.error(error?.data?.message||error?.data?.error||'Error uploading painting');
     }
   };
 

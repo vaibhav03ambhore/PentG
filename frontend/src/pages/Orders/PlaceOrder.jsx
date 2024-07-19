@@ -1,6 +1,5 @@
 import { Link,useNavigate } from "react-router-dom";
 import { useDispatch,useSelector } from "react-redux";
-import { useEffect } from "react";
 import { useCreateOrderMutation } from "@/redux/api/order";
 import { clearOrderInfo } from "../../redux/features/orderInfo/orderSlice";
 import { toast } from "react-toastify";
@@ -13,7 +12,7 @@ const PlaceOrder = () => {
     const {orderInfo:order}=useSelector((state)=>state.order);
     const [createOrder,{isLoading,error}]=useCreateOrderMutation();
     
-    const shippingCharge=order?.orderItem?.price>3000?100:50;
+    const shippingCharge=(order?.orderItem?.price*10)/100;
     const totalPrice=shippingCharge+order?.orderItem?.price;
   
     const placeOrderHandler = async () => {
@@ -38,7 +37,7 @@ const PlaceOrder = () => {
     if(!order) return(<>no data...</>)
   return (
     <div className="container flex flex-col md:flex-row justify-between gap-3  mt-8">
-        <div className="border border-gray-700 p-4 rounded-lg w-full md:w-1/2">
+        <div className="border border-blue-800 p-4 rounded-lg w-full md:w-1/2">
           <h2 className="text-lg font-bold mb-4 text-yellow-500 text-center">Shipping</h2>
           <p className="mb-4 italic"><strong className="text-gray-200">Full Name:</strong> {order?.shippingDetails.fullName}</p>
           <p className="mb-4 italic"><strong className="text-gray-200">Mobile No:</strong> {order?.shippingDetails.mobile}</p>
@@ -46,7 +45,7 @@ const PlaceOrder = () => {
           <p className="mb-4 italic"><strong className="text-gray-200">Method:</strong> {order?.paymentMethod}</p>
         </div>
         <div className="w-full md:w-1/2">
-          <div className="border border-gray-700 p-4 rounded-lg">
+          <div className="border border-blue-800 p-4 rounded-lg">
             <h2 className="text-lg font-bold mb-4 text-center text-yellow-500">Order Summary</h2>
             <div className="flex flex-col gap-1 justify-center items-center mt-3">
                 <img
@@ -54,7 +53,7 @@ const PlaceOrder = () => {
                   alt={order?.orderItem?.name}
                   className="w-20 h-20 object-cover rounded-lg"
                 />
-                <Link to={`/painting/${order?.orderItem?._id}`} className="text-md font-semibold hover:underline">
+                <Link to={`/paintings/${order?.orderItem?._id}`} className="text-md font-semibold hover:underline">
                   {order?.orderItem?.name}
                 </Link>
             </div>

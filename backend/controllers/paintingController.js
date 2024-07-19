@@ -7,8 +7,6 @@ const getSpecificPainting = asyncHandler(async(req,res)=>{
     try{
         const {id}=req.params;
         const secificPainting = await Painting.findById(id).populate('creator');
-        
-        // console.log(secificPainting)
         res.json(secificPainting);
 
     }catch(error){
@@ -54,7 +52,6 @@ const getAllForSalePaintingsByCreator= asyncHandler(async(req,res)=>{
     const {id:creatorId} = req.params;
     try{
         const paintings = await Painting.find({creator: creatorId, status: "For Sale"});
-        // console.log(paintings)
         res.json(paintings);
     }catch(err){
         res.status(500).json({error:err.message})
@@ -69,10 +66,9 @@ const createPainting = asyncHandler(async(req,res)=>{
 
     const existingPainting = await Painting.findOne({name: paintingData.name});
     if(existingPainting){
-        return res.status(400).json({ message: "Painting with this name already exists" });
+        res.status(400)
+        throw new Error("Painting with this name already exists");
     }
-    
-    // console.log(req.files);
     if(req?.files?.image){
         try{
             const file = req.files.image[0];
@@ -81,14 +77,12 @@ const createPainting = asyncHandler(async(req,res)=>{
             paintingData.image = uploadedFile.secure_url;
         }catch(err){
             console.error("Error uploading painting image:", err);
-            return res.status(500).json({ message: "Error uploading painting image" });
+            res.status(500).json({message:err.message+"Error uploading painting image"});
         }
     }else console.log("No painting image uploaded");
 
     try{
-        // console.log(paintingData);
         const newPainting = await Painting.create(paintingData);
-
         res.json(newPainting);
     }catch(err){
         res.status(500).json({message:err.message+"Error saving painting into db"});
@@ -106,7 +100,8 @@ const updatePainting = asyncHandler(async (req, res) => {
       );
   
       if (!updatedPainting) {
-        return res.status(404).json('Painting not found');
+        res.status(404);
+        throw new Error("Painting not found");
       }
   
       res.json(updatedPainting);
@@ -124,7 +119,8 @@ const deletePainting = asyncHandler(async(req,res)=>{
         const deletedPainting = await Painting.findByIdAndDelete(id);
 
         if(!deletedPainting){
-            res.status(404).json('Painting not found');
+            res.status(404);
+            throw new Error("Painting not found");
         }
         res.json({message:'Painting deleted successfully!'});
 

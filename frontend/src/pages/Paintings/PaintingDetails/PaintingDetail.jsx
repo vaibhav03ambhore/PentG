@@ -52,7 +52,6 @@ const PaintingDetail = () => {
       for (let key in formData) {
         formDataToSend.append(key, formData[key]);
       }
-      console.log(formData);
       await updatePainting({ id: pid, updatedPainting: formDataToSend });
       setEditMode(null);
     } catch (error) {
@@ -88,11 +87,11 @@ const PaintingDetail = () => {
     }
   }
   return (
-    <div className="w-full h-screen flex justify-center items-center p-4">
-      <div className="flex flex-col md:flex-row items-center justify-around bg-gray-800 shadow-md rounded-lg p-4 w-full h-full">
-        <div className='p-2 flex flex-col items-center justify-center ' >
+    <div className="w-full h-full mt-4 flex justify-center items-center p-4">
+      <div className="flex flex-col md:flex-row rounded-lg p-4 gap-4 md:gap-20">
+        <div className='p-2 flex flex-col items-center' >
           <div className="flex gap-2 justify-center">
-            <h1 className="text-lg underline font-semibold mb-6 mt-5 text-center md:text-2xl">
+            <h1 className="text-lg underline font-semibold mb-4 text-center md:text-2xl">
               {editMode === 'name' ? (
                 <input
                   type="text"
@@ -107,13 +106,13 @@ const PaintingDetail = () => {
               )}
             </h1>
             {ownPainting && (
-              <button className="hover:text-gray-300 text-gray-400 font-bold mx-2" onClick={() => handleEdit('name')}>
+              <button className="hover:text-gray-300 text-gray-400 font-bold mx-1 mb-2" onClick={() => handleEdit('name')}>
                 <FaEdit />
               </button>
             )}
           </div>
 
-          <div className="  bg-slate-600 p-2 mb-2  w-[350px] h-[350px]">
+          <div className="  bg-slate-600 p-4 mb-2  w-[350px] h-[350px]">
             <img
               className="w-full h-full object-contain"
               src={painting.image}
@@ -121,14 +120,18 @@ const PaintingDetail = () => {
             />
           </div>
         </div>
-        <div className='md:ml-4 p-2'>
+        <div className='p-2 overflow-x-auto'>
           <div className="p-2 text-sm sm:text-md overflow-x-auto">
             <h1 className='text-lg md:text-xl font-bold text-yellow-400 mb-4'>Painting Detatils👇</h1>
-            <table className=" min-w-full divide-y divide-gray-200 rounded-lg table-auto">
-              <tbody className=''>
+            <table className="table-auto min-w-full">
+              <tbody className='border border-gray-600'>
                 <tr className="border-b border-gray-500 ">
                   <td className="px-4 py-2 font-semibold bg-slate-700">Creator</td>
                   <td className="px-4 py-2  bg-slate-900">{painting.creator.username}</td>
+                </tr>
+                <tr className="border-b border-gray-500 ">
+                  <td className="px-4 py-2 font-semibold bg-slate-700">Category</td>
+                  <td className="px-4 py-2  bg-slate-900">{painting.medium}</td>
                 </tr>
                 <tr className="border-b border-gray-500">
                   <td className="px-4 py-2 font-semibold bg-slate-700">Price</td>
@@ -153,13 +156,13 @@ const PaintingDetail = () => {
                 </tr>
                 <tr className="border-b border-gray-500">
                   <td className="px-4   py-2 font-semibold bg-slate-700">Description</td>
-                  <td className="px-4  py-2 bg-slate-900 w-full sm:w-1/2">
+                  <td className="px-4  py-2 bg-slate-900">
                     {editMode === 'description' ? (
                       <textarea
                         name="description"
                         value={formData.description}
                         onChange={handleChange}
-                        className="bg-gray-700 px-2 py-1 outline-none border-b border-gray-500"
+                        className="md:w-96 bg-gray-700 px-2 py-1 outline-none border-b border-gray-500"
                       />
                     ) : (
                       ownPainting?formData.description:painting.description
@@ -228,14 +231,18 @@ const PaintingDetail = () => {
                   {deleteLoading?"deleting..":"Delete Painting"} 
                 </button>
               </div>
-            ) : (painting.status!=='Sold'&&
-              <div className="text-center sm:text-left mt-6">
-                <Link to={`/paintings/${pid}/checkout`}>
-                  <button className="bg-blue-500 hover:bg-blue-700  text-sm md:text-md font-bold py-2 px-4 rounded">
-                    Buy Now
-                  </button>
-                </Link>
-              </div>
+            ) : (painting.status==='For Sale'?(
+                  <div className="text-center sm:text-left mt-6">
+                    <Link to={`/paintings/${pid}/checkout`}>
+                      <button className="bg-blue-500 hover:bg-blue-700  text-sm md:text-md font-bold py-2 px-4 rounded">
+                        Buy Now
+                      </button>
+                    </Link>
+                  </div>):(
+                    <div className="text-green-500">
+                      <p>Ordered has been placed for this painting, so can't buy again!</p>
+                    </div>
+                  )
             )}
           </div>
         </div>

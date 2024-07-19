@@ -5,8 +5,6 @@ import Painting from "../models/painting.js";
 const createOrder = asyncHandler(async(req,res)=>{
     const {orderItem,shippingDetails,paymentMethod} = req.body;
     const userId = req.user._id;
-    // console.log(req.body,req)
-
     try{
         if(!orderItem || !shippingDetails || !paymentMethod ){
             res.status(400);
@@ -19,12 +17,12 @@ const createOrder = asyncHandler(async(req,res)=>{
             res.status(400);
             throw new Error(`Painting ${orderItem} does not exist!`);
         }
-
         const itemPrice = itemFromDB.price;
-        const shippingCharge=(itemPrice>3000)?100:50;
+        const shippingCharge=(itemPrice*10)/100;
         const totalPrice = itemPrice + shippingCharge;
 
-        // console.log(itemFromDB)
+        itemFromDB.status = "Ordered";
+        await itemFromDB.save();
         const order= await Order.create({
             orderItem,
             shippingCharge,
@@ -54,10 +52,8 @@ const getOrderById = asyncHandler(async(req,res)=>{
 
 const getUserOrders = asyncHandler(async(req,res)=>{
     const userId = req.user._id;
-    // console.log(userId)
     try{
         const orders = await Order.find({user:userId}).populate('user').populate({path:'orderItem',populate:{path:'creator'}});
-        // console.log(orders)
         if(!orders || orders.length===0){
             res.status(404);
             throw new Error("No purchases/orders found");
@@ -112,8 +108,7 @@ const updateOrderToPaid = asyncHandler(async(req,res)=>{
             email_address:req.body.payer.email_address
         }
         const updatedOrder = await order.save();
-        const updatedPainting = await painting.save();
-        // console.log(updatedPainting)
+        await painting.save();
         res.json(updatedOrder);
     }catch(error){
         res.status(500).json({error:error.message})
