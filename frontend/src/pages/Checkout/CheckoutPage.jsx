@@ -12,8 +12,6 @@ const CheckoutPage = () => {
   const { id } = useParams();
 
   const {orderInfo} = useSelector((state) => state.order);
-  // console.log(orderInfo)
-
   const { data: painting, isLoading } = useGetSpecificPaintingQuery(id);
 
   const [shippingDetails, setShippingDetails] = useState(orderInfo?.shippingDetails || {
@@ -24,7 +22,6 @@ const CheckoutPage = () => {
     pincode: "",
     mobile: "",
   });
-//  console.log(shippingDetails);
   const [paymentMethod, setPaymentMethod] = useState("PayPal");
 
   const handleInputChange = (e) => {
@@ -47,8 +44,6 @@ const CheckoutPage = () => {
 
   if (isLoading) return (<div>Loading</div>);
   if (!painting) return (<div>Painting not found</div>);
-
-  // console.log(orderInfo?.orderItem)
 
   return (
     <div className="min-h-screen bg-gray-900 flex flex-wrap md:flex-nowrap gap-5 p-10 w-full">

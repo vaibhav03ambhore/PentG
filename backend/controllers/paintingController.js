@@ -1,4 +1,4 @@
-import Painting from '../models/painting.js';
+import Painting from "../models/painting.js";
 import asyncHandler from '../middleware/asyncHandler.js';
 import { uploadOnCloudinary } from '../utils/cloudinary.js';
 import User from '../models/User.js';
