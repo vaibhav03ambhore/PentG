@@ -14,9 +14,9 @@ const UserProfile = () => {
   const { data, error, isLoading } = useGetOthersProfileQuery(id);
   
   if (error) {
-    if (error.data.message === "UseProfileEndpointError") {
+    if (error?.data?.message === "UseProfileEndpointError") {
       isOwnProfile = true;
-    } else if (error.data.message === "UserNotFoundError") {
+    } else if (error?.data?.message === "UserNotFoundError") {
       return <div className="max-w-3xl mx-auto p-6 bg-gray-900 rounded-lg shadow-md mt-2">👤User not found!!</div>;
     } else {
       isOwnProfile=false;
