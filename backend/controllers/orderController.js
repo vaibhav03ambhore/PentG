@@ -1,6 +1,6 @@
 import asyncHandler from "../middleware/asyncHandler.js"
 import Order from "../models/Order.js"
-import Painting from "../models/painting.js";
+import Painting from "../models/Painting.js";
 
 const createOrder = asyncHandler(async(req,res)=>{
     const {orderItem,shippingDetails,paymentMethod} = req.body;
