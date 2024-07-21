@@ -5,7 +5,7 @@ import {
   useGetSpecificPaintingQuery,
   useUpdatePaintingMutation,
   useDeletePaintingMutation,
-} from "@/redux/api/paintings";
+} from "../../../redux/api/paintings";
 import { toast } from "react-toastify";
 
 const PaintingDetail = () => {

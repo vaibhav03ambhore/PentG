@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGetSpecificPaintingQuery } from '@/redux/api/paintings';
+import { useGetSpecificPaintingQuery } from '../../redux/api/paintings';
 import { useDispatch, useSelector } from 'react-redux';
-import { setOrderInfo } from '@/redux/features/orderInfo/orderSlice';
+import { setOrderInfo } from '../../redux/features/orderInfo/orderSlice';
 
 import { useParams } from 'react-router';
 

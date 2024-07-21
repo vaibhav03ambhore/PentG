@@ -3,7 +3,7 @@ import React, { useState,useEffect } from 'react';
 import { FaFacebook, FaTwitter, FaEdit, FaPlusCircle, FaInstagram } from 'react-icons/fa';
 import { useProfileMutation,useGetCurrentUserProfileQuery } from '../../redux/api/users';
 import {useDispatch} from 'react-redux';
-import { setCredential } from '@/redux/features/auth/authSlice';
+import { setCredential } from '../..//redux/features/auth/authSlice';
 import { toast } from 'react-toastify';
 
 const Profile = () => {

@@ -3,8 +3,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 
-import { useLoginMutation } from "@/redux/api/users";
-import { setCredential } from "@/redux/features/auth/authSlice";
+import { useLoginMutation } from "../../redux/api/users";
+import { setCredential } from "../../redux/features/auth/authSlice";
 
 const Login = () => {
 

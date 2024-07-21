@@ -52,10 +52,10 @@ const Navbar = () => {
             <div className="relative ">
                <Link
                   to={`/${userId}/profile`}
-                  className={`flex gap-2 text-blue-gray-700 hover:text-blue-500 ${location.pathname === `/${userId}/profile` ? 'text-blue-500' : ''}`}
+                  className={`flex gap-2 text-blue-gray-700 hover:text-blue-500 ${location?.pathname === `/${userId}/profile` ? 'text-blue-500' : ''}`}
                 >
                   <img src={profilePic} alt="User Profile picture" className="w-6 h-6 rounded-full hover:border-blue-600 " />
-                  <h1 className="hover:underline">{userInfo.username}</h1> 
+                  <h1 className="hover:underline">{userInfo?.username}</h1> 
                 </Link>          
             </div>
           )}

@@ -1,6 +1,6 @@
 import { Link,useNavigate } from "react-router-dom";
 import { useDispatch,useSelector } from "react-redux";
-import { useCreateOrderMutation } from "@/redux/api/order";
+import { useCreateOrderMutation } from "../../redux/api/order";
 import { clearOrderInfo } from "../../redux/features/orderInfo/orderSlice";
 import { toast } from "react-toastify";
 

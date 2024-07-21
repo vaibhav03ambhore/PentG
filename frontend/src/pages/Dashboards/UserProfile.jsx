@@ -2,7 +2,7 @@ import React from 'react';
 import Profile from './Profile';
 import OtherUserProfile from './OtherUserProfile';
 
-import { useGetOthersProfileQuery } from '@/redux/api/users';
+import { useGetOthersProfileQuery } from '../../redux/api/users';
 import { useParams } from 'react-router-dom';
 
 
