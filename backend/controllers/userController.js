@@ -130,7 +130,7 @@ const getUserById = asyncHandler(async (req, res) => {
 
 
 const getCurrentUserProfile= asyncHandler(async(req,res)=>{
-    const currentUser= await User.findById(req.user._id);
+    const currentUser= await User.findById(req?.user?._id);
     if(currentUser){
         res.json({
             _id:currentUser._id,

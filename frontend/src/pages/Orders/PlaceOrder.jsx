@@ -75,7 +75,7 @@ const PlaceOrder = () => {
             className="hover:bg-blue-700 bg-blue-600 py-2 px-4 text-lg w-full mt-4"
             onClick={placeOrderHandler}
             >
-            {isLoading?"wait":"place order"}
+            {isLoading?"wait...":"place order"}
           </button>
         </div>
     </div>

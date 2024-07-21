@@ -12,7 +12,8 @@ export default defineConfig({
   },
   server:{
     proxy:{
-      '/api/': 'https://pentg.onrender.com'
+      // '/api/': 'https://pentg-backend.onrender.com'
+      '/api/': 'http://localhost:3000'
     }
   }
 })

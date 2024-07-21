@@ -45,6 +45,12 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       })
     }),
+    getCurrentUserProfile:builder.query({
+      query:()=>({
+        url: `${USER_URL}/profile`,
+        method: 'GET',
+      })
+    }),
 
      
   }),
@@ -57,4 +63,5 @@ export const {
   useProfileMutation,
   useGetOthersProfileQuery,
   useGetUsernameByIdQuery,
+  useGetCurrentUserProfileQuery,
 } = userApiSlice;
