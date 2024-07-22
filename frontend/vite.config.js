@@ -10,11 +10,11 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  // server:{
-  //   proxy:{
-  //     '/api/': 'https://pentg-backend.onrender.com/'
-  //   }
-  // },
+  server:{
+    proxy:{
+      '/api/': 'https://pentg-backend.onrender.com/'
+    }
+  },
   build: {
     outDir: 'dist'
   }
