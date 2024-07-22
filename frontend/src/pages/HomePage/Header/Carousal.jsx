@@ -7,9 +7,9 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
+} from "../../../components/ui/carousel";
 import Painting from "./Painting";
-import { useGetAllPaintingsToSellQuery } from '@/redux/api/paintings';
+import { useGetAllPaintingsToSellQuery } from '../../../redux/api/paintings';
 
 const Carousell = () => {
   const { data: paintings, isLoading } = useGetAllPaintingsToSellQuery();

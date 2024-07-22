@@ -1,5 +1,6 @@
 // Profile.jsx
 import React, { useState,useEffect } from 'react';
+import { useNavigate } from 'react-router';
 import { FaFacebook, FaTwitter, FaEdit, FaPlusCircle, FaInstagram } from 'react-icons/fa';
 import { useProfileMutation,useGetCurrentUserProfileQuery } from '../../redux/api/users';
 import {useDispatch} from 'react-redux';
@@ -8,6 +9,7 @@ import { toast } from 'react-toastify';
 
 const Profile = () => {
   const {data:userInfo,isLoading:profileLoading,error}=useGetCurrentUserProfileQuery();
+  const navigate=useNavigate();
   const dispatch=useDispatch();
   const [updateProfile,{isLoading}] = useProfileMutation();
   
@@ -24,6 +26,7 @@ const Profile = () => {
 
  
   useEffect(()=>{
+    if(!userInfo) navigate('/login');
     setUsername(userInfo?.username);
     setEmail(userInfo?.email);
     setPhoneNumber(userInfo?.phoneNumber);
@@ -32,8 +35,12 @@ const Profile = () => {
     setProfilePicture(userInfo?.profilePicture);
     setSocialMediaLinks(userInfo?.socialMediaLinks||{});
   
-  },[userInfo]);
+  },[userInfo,navigate]);
 
+  if(error){
+    toast.error(error?.data?.message);
+    navigate('/login');
+  }
  
   
   const handleProfileSave = async () => { 
@@ -88,9 +95,6 @@ const Profile = () => {
       [platform]: value,
     }));
   };
-  
-  if(error) return <div className='text-red-500 text-lg font-semibold text-center mt-4'>Something went wrong, please try again later!</div>;
-
   return (
     <div className='bg-gray-800 flex flex-col gap-3 rounded-b-2xl'>
       {profileLoading ? (

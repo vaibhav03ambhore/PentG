@@ -113,8 +113,8 @@ const getAllUsers= asyncHandler(async(req,res)=>{
 })
 
 const getUserById = asyncHandler(async (req, res) => {
-  const loggedInUserId = req.user._id;
-  const userId = req.params.id;
+  const loggedInUserId = req?.user?._id;
+  const userId = req?.params?.id;
 
   if (loggedInUserId.toString() === userId.toString()) {
     res.status(400).json({ message: "UseProfileEndpointError" });
@@ -145,7 +145,6 @@ const getCurrentUserProfile= asyncHandler(async(req,res)=>{
     }else{
         res.status(404);
         throw new Error("User not found");
-    
     }
     
 
