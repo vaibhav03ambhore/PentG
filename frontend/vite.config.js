@@ -10,11 +10,17 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  server:{
-    proxy:{
-      '/api/': 'https://pentg-backend.onrender.com/'
+  server: {
+    proxy: {
+      '/api/': {
+        target: 'https://pentg-backend.onrender.com/',
+        changeOrigin: true, 
+        secure: false, 
+        rewrite: (path) => path.replace(/^\/api/, '') 
+      }
     }
   },
+  
   build: {
     outDir: 'dist'
   }
