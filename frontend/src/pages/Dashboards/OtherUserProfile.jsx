@@ -4,7 +4,7 @@ import { useGetOthersProfileQuery } from '../../redux/api/users';
 
 const OtherUserProfile = ({id}) => {
 
-  const { data:userInfo, error, isLoading } = useGetOthersProfileQuery(id);
+  const { data:userInfo, error,} = useGetOthersProfileQuery(id);
 
   if (error?.data?.message === "UserNotFoundError") {
     return <div className="max-w-3xl mx-auto p-6 bg-gray-900 rounded-lg shadow-md mt-2">👤User not found!!</div>;
