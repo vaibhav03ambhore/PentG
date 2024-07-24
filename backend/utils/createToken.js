@@ -8,8 +8,7 @@ const createToken = (res,userId)=>{
     const options = {
         httpOnly:true,
         secure: process.env.NODE_ENV !== 'development',
-        sameSite:'None',
-        domain:".onrender.com",
+        sameSite:'strict',
         maxAge:30*24*60*60*1000
     }
     //set jwt as an httpOnly cookie
