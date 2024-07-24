@@ -13,9 +13,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/api/': {
-        target: 'https://pentg-backend.onrender.com/',
+        target: 'https://pentg-backend-url.onrender.com',
         changeOrigin: true, 
-        
       }
     }
   },
