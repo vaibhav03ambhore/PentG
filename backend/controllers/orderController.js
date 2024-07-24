@@ -51,7 +51,7 @@ const getOrderById = asyncHandler(async(req,res)=>{
 })
 
 const getUserOrders = asyncHandler(async(req,res)=>{
-    const userId = req?.user?._id;
+    const userId = req.user._id;
     try{
         const orders = await Order.find({user:userId}).populate('user').populate({path:'orderItem',populate:{path:'creator'}});
         if(!orders || orders.length===0){
@@ -65,7 +65,7 @@ const getUserOrders = asyncHandler(async(req,res)=>{
 })
 
 const getUserSells= asyncHandler(async(req,res)=>{
-    const userId = req?.user?._id;
+    const userId = req.user._id;
     try{
         const orders = await Order.find({
                 orderItem:{
@@ -90,7 +90,7 @@ const getUserSells= asyncHandler(async(req,res)=>{
 })
 
 const updateOrderToPaid = asyncHandler(async(req,res)=>{
-    const orderId=req?.params?.id;
+    const orderId=req.params.id;
     try{
         const order = await Order.findById(orderId);
         if(!order){
@@ -116,7 +116,7 @@ const updateOrderToPaid = asyncHandler(async(req,res)=>{
 })
 
 const updateOrderToDelivered = asyncHandler(async(req,res)=>{
-    const orderId=req?.params?.id;
+    const orderId=req.params.id;
     try{
         const order = await Order.findById(orderId);
         if(!order){
