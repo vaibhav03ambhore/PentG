@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { useGetAllPaintingsToSellQuery } from '@/redux/api/paintings';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../../../components/ui/card";
+import { useGetAllPaintingsToSellQuery } from '../../../redux/api/paintings';
 
 const Collection = () => {
   const { data: paintingData, isLoading, isError, error } = useGetAllPaintingsToSellQuery();

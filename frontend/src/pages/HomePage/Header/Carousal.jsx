@@ -1,15 +1,15 @@
 import React from "react";
 import Autoplay from "embla-carousel-autoplay";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "../../../components/ui/card";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
+} from "../../../components/ui/carousel";
 import Painting from "./Painting";
-import { useGetAllPaintingsToSellQuery } from '@/redux/api/paintings';
+import { useGetAllPaintingsToSellQuery } from '../../../redux/api/paintings';
 
 const Carousell = () => {
   const { data: paintings, isLoading } = useGetAllPaintingsToSellQuery();

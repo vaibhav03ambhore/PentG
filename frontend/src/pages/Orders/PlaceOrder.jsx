@@ -1,6 +1,6 @@
 import { Link,useNavigate } from "react-router-dom";
 import { useDispatch,useSelector } from "react-redux";
-import { useCreateOrderMutation } from "@/redux/api/order";
+import { useCreateOrderMutation } from "../../redux/api/order";
 import { clearOrderInfo } from "../../redux/features/orderInfo/orderSlice";
 import { toast } from "react-toastify";
 
@@ -75,7 +75,7 @@ const PlaceOrder = () => {
             className="hover:bg-blue-700 bg-blue-600 py-2 px-4 text-lg w-full mt-4"
             onClick={placeOrderHandler}
             >
-            {isLoading?"wait":"place order"}
+            {isLoading?"wait...":"place order"}
           </button>
         </div>
     </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import Pcard from './Pcard';
 import { Link, useParams } from 'react-router-dom';
-import {useGetAllSoldPaintingsByCreatorQuery,useGetAllForSalePaintingsByCreatorQuery} from '@/redux/api/paintings';
+import {useGetAllSoldPaintingsByCreatorQuery,useGetAllForSalePaintingsByCreatorQuery} from '../../redux/api/paintings';
 
 const Paintings = () => {
 

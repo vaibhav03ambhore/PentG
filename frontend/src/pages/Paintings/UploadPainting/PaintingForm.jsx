@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import {useCreatePaintingMutation} from '@/redux/api/paintings';
-import { useLoaderData, useNavigate } from 'react-router';
+import {useCreatePaintingMutation} from '../../../redux/api/paintings';
+import {  useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 
 

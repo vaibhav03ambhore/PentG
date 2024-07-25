@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useGetUserSellsQuery } from "@/redux/api/order";
+import { useGetUserSellsQuery } from "../../redux/api/order";
 
 const Sells = () => {
   const { data: orders, isLoading, error } = useGetUserSellsQuery();
