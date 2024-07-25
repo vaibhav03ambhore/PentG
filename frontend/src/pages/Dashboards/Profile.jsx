@@ -26,6 +26,10 @@ const Profile = () => {
 
  
   useEffect(()=>{
+    if(error && !profileLoading){
+      toast.error(error?.data?.message);
+      navigate('/login');
+    }
     if(!userInfo) navigate('/login');
     setUsername(userInfo?.username);
     setEmail(userInfo?.email);
@@ -37,10 +41,6 @@ const Profile = () => {
   
   },[userInfo,navigate]);
 
-  if(error){
-    toast.error(error?.data?.message);
-    navigate('/login');
-  }
  
   
   const handleProfileSave = async () => { 
