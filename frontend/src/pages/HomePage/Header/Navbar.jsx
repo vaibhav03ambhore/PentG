@@ -3,9 +3,11 @@ import { Link, useLocation } from 'react-router-dom';
 import { IoMenu, IoClose } from 'react-icons/io5';
 import { AiOutlineHome, AiOutlineShopping, AiOutlineUserAdd } from "react-icons/ai";
 import { useSelector } from 'react-redux';
+import { useGetCurrentUserProfileQuery } from '../../../redux/api/users';
 
 const Navbar = () => {
-  
+  const {data:user}=useGetCurrentUserProfileQuery();
+  const profilePic=user?.profilePicture||'https://th.bing.com/th?id=OIP.Aa3B6uwjU0BFoZrAQG7GzQHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&dpr=1.4&pid=3.1&rm=2'
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
@@ -50,10 +52,10 @@ const Navbar = () => {
             <div className="relative ">
                <Link
                   to={`/${userId}/profile`}
-                  className={`flex gap-2 text-blue-gray-700 hover:text-blue-500 ${location.pathname === `/${userId}/profile` ? 'text-blue-500' : ''}`}
+                  className={`flex gap-2 text-blue-gray-700 hover:text-blue-500 ${location?.pathname === `/${userId}/profile` ? 'text-blue-500' : ''}`}
                 >
-                  <img src={userInfo.profilePicture ||' https://th.bing.com/th?id=OIP.Aa3B6uwjU0BFoZrAQG7GzQHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&dpr=1.4&pid=3.1&rm=2'} alt="User Profile picture" className="w-6 h-6 rounded-full hover:border-blue-600 " />
-                  <h1 className="hover:underline">{userInfo.username}</h1> 
+                  <img src={profilePic} alt="User Profile picture" className="w-6 h-6 rounded-full hover:border-blue-600 " />
+                  <h1 className="hover:underline">{userInfo?.username}</h1> 
                 </Link>          
             </div>
           )}
@@ -102,7 +104,7 @@ const Navbar = () => {
                 className={`${location.pathname === `/${userId}/profile` ? 'text-blue-500' : ''}`}
               >
                 <li className='flex gap-2 py-3 pl-3 hover:text-blue-800 hover:bg-slate-200 transition-colors duration-500'>
-                  <img src={userInfo.profilePicture ||' https://th.bing.com/th?id=OIP.Aa3B6uwjU0BFoZrAQG7GzQHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&dpr=1.4&pid=3.1&rm=2'} alt="User Profile picture" className="w-6 h-6 rounded-full hover:border-blue-600 " />
+                  <img src={profilePic} alt="User Profile picture" className="w-6 h-6 rounded-full hover:border-blue-600 " />
                   <h1 className="hover:underline">{userInfo.username}</h1> 
                 </li>
               </Link>

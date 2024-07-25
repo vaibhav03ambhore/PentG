@@ -1,11 +1,19 @@
 import React from 'react';
 import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
+import { useGetOthersProfileQuery } from '../../redux/api/users';
 
-const OtherUserProfile = ({ userInfo }) => {
+const OtherUserProfile = ({ id }) => {
     
+  const { data:userInfo, error } = useGetOthersProfileQuery(id);
   if (!userInfo) return <div>No data found!</div>;
 
   const { username, email, phoneNumber, location, bio, profilePicture, socialMediaLinks } = userInfo;
+
+  if (error) {
+     if (error.data.message === "UserNotFoundError") {
+      return <div className="max-w-3xl mx-auto p-6 bg-gray-900 rounded-lg shadow-md mt-2">👤User not found!!</div>;
+    } 
+  }
 
   return (
     <div className='bg-gray-800 flex flex-col gap-3 rounded-b-2xl'>
