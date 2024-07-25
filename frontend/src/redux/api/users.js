@@ -70,5 +70,4 @@ export const {
   useGetOthersProfileQuery,
   useGetCurrentUserProfileQuery,
   useGetUsernameByIdQuery,
-  useGetCurrentUserProfileQuery,
 } = userApiSlice;
