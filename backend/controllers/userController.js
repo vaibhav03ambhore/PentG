@@ -89,6 +89,7 @@ const loginUser= asyncHandler(async(req,res)=>{
         username:user.username,
         email:user.email,
         isAdmin:user.isAdmin,
+        profilePicture:user.profilePicture?user.profilePicture:'',
     })
 })
 

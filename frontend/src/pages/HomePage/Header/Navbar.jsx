@@ -3,21 +3,19 @@ import { Link, useLocation } from 'react-router-dom';
 import { IoMenu, IoClose } from 'react-icons/io5';
 import { AiOutlineHome, AiOutlineShopping, AiOutlineUserAdd } from "react-icons/ai";
 import { useSelector } from 'react-redux';
-import { useGetCurrentUserProfileQuery } from '../../../redux/api/users';
 
 const Navbar = () => {
-  const {data:user}=useGetCurrentUserProfileQuery();
-  const profilePic=user?.profilePicture||'https://th.bing.com/th?id=OIP.Aa3B6uwjU0BFoZrAQG7GzQHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&dpr=1.4&pid=3.1&rm=2'
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-
+  
   // Mobile View Pages Links
   const Links = [
     { name: "Home", link: "/" },
     { name: "Collection", link: "/paintings" },
   ];
-
+  
   const {userInfo} =useSelector(state => state.auth);
+  const profilePic=userInfo?.profilePicture||'https://th.bing.com/th?id=OIP.Aa3B6uwjU0BFoZrAQG7GzQHaHa&w=250&h=250&c=8&rs=1&qlt=90&o=6&dpr=1.4&pid=3.1&rm=2'
   const userId = userInfo?._id;
 
   return (
