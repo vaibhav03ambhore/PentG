@@ -25,6 +25,9 @@ const Profile = () => {
 
  
   useEffect(()=>{
+    if(error &&!profileLoading){
+      toast.error(error?.data?.message);
+    }
     if(!userInfo) navigate('/login');
     setUsername(userInfo?.username);
     setEmail(userInfo?.email);
@@ -35,11 +38,6 @@ const Profile = () => {
     setSocialMediaLinks(userInfo?.socialMediaLinks||{});
   
   },[userInfo,navigate]);
-
-  if(error){
-    toast.error(error?.data?.message);
-    navigate('/login');
-  }
  
   
   const handleProfileSave = async () => { 

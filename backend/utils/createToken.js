@@ -8,7 +8,7 @@ const createToken = (res,userId)=>{
     const options = {
         httpOnly:true,
         secure: process.env.NODE_ENV !== 'development',
-        sameSite:'strict',
+        sameSite:'none',
         maxAge:30*24*60*60*1000
     }
     //set jwt as an httpOnly cookie
