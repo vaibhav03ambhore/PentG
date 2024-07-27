@@ -10,9 +10,12 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  server:{
-    proxy:{
-      '/api/': 'http://localhost:3000',
+  server: {
+    proxy: {
+      '/api/': {
+        target: 'https://pentg-backend-url.onrender.com',
+        changeOrigin: true, 
+      }
     }
   },
  
