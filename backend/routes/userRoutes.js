@@ -1,7 +1,7 @@
 import express from 'express';
 
 //controller
-import {createUser, loginUser, logoutUser, getCurrentUserProfile, getAllUsers, updateCurrentUserProfile, getUserById,getUsernameById} from '../controllers/userController.js';
+import {createUser, loginUser, logoutUser, getAllUsers, updateCurrentUserProfile, getUserById,getCurrentUserProfile,getUsernameById} from '../controllers/userController.js';
 
 //middlewares
 import {authenticate, authorizeAdmin} from '../middleware/authMiddleware.js';

@@ -1,4 +1,3 @@
-// Profile.jsx
 import React, { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { FaFacebook, FaTwitter, FaEdit, FaPlusCircle, FaInstagram } from 'react-icons/fa';
