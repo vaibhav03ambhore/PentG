@@ -2,6 +2,7 @@ import React from 'react';
 import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
 import { useGetOthersProfileQuery } from '../../redux/api/users';
 
+
 const OtherUserProfile = ({ id }) => {
     
   const { data:userInfo, error } = useGetOthersProfileQuery(id);

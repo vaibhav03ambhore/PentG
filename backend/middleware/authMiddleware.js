@@ -7,7 +7,9 @@ import asyncHandler from "../middleware/asyncHandler.js";
 const authenticate= asyncHandler(async(req,res,next)=>{
     let token;
 
-    token = req.cookies.jwt;
+    token = req?.cookies?.jwt;
+    console.log(token);
+    console.log(req?.cookies);
 
     if(token){
         try {

@@ -9,9 +9,10 @@ const UserProfile = () => {
   const { id } = useParams();
   let isOwnProfile;
   const {userInfo} = useSelector(state => state.auth);
-  const loggedInuserId=userInfo._id;
-  isOwnProfile=id===loggedInuserId;
-  console.log(isOwnProfile)
+
+  const loggedInUserId = userInfo?._id;
+  isOwnProfile = loggedInUserId === id;
+ 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-gray-900 rounded-lg shadow-md mt-2">
       <div className="pb-1">
