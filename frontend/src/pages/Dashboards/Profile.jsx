@@ -1,17 +1,19 @@
 import React, { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { FaFacebook, FaTwitter, FaEdit, FaPlusCircle, FaInstagram } from 'react-icons/fa';
-import { useProfileMutation,useGetCurrentUserProfileQuery } from '../../redux/api/users';
+import { useProfileMutation,useGetCurrentUserProfileQuery,useLogoutMutation } from '../../redux/api/users';
 import {useDispatch} from 'react-redux';
 import { setCredential } from '../..//redux/features/auth/authSlice';
 import { toast } from 'react-toastify';
+import { logout } from '../../redux/features/auth/authSlice';
 
 const Profile = () => {
   const {data:userInfo,isLoading:profileLoading,error}=useGetCurrentUserProfileQuery();
   const navigate=useNavigate();
   const dispatch=useDispatch();
   const [updateProfile,{isLoading}] = useProfileMutation();
-  
+  const [logoutApiCall] = useLogoutMutation();
+
   const [username, setUsername] = useState(userInfo?.username ||'');
   const [email, setEmail] = useState(userInfo?.email || '');
   const [phoneNumber, setPhoneNumber] = useState(userInfo?.phoneNumber || '');
@@ -26,9 +28,11 @@ const Profile = () => {
  
   useEffect(()=>{
     if(error &&!profileLoading){
-      toast.error(error?.data?.message);
+      if(error?.data?.message=="User not found"){
+        logoutHandler();
+      }
+        toast.error(error?.data?.message);
     }
-    if(!userInfo) navigate('/login');
     setUsername(userInfo?.username);
     setEmail(userInfo?.email);
     setPhoneNumber(userInfo?.phoneNumber);
@@ -38,7 +42,17 @@ const Profile = () => {
     setSocialMediaLinks(userInfo?.socialMediaLinks||{});
   
   },[userInfo,navigate]);
- 
+
+  const logoutHandler =async () => {
+    try{
+      await logoutApiCall().unwrap();
+      dispatch(logout());
+      navigate('/login');
+
+    }catch(error){
+      console.log(error)
+    }
+  }
   
   const handleProfileSave = async () => { 
     try {
@@ -53,14 +67,13 @@ const Profile = () => {
       formData.append('socialMediaLinks',JSON.stringify(socialMediaLinks));
 
       const res = await updateProfile(formData).unwrap();
-      
       dispatch(setCredential({...res}));
+      window.location.reload();
       toast.success('Profile updated successfully!')
-      // window.location.reload();
     } catch (error) {
-      error.data.errors.map(err=>console.log(err));
+      error?.data?.errors?.map(err=>console.log(err));
       let errToastMess='';
-      error.data.errors.map(err=>errToastMess+=err+'\n');
+      error?.data?.errors?.map(err=>errToastMess+=err+'\n');
       toast.error(errToastMess?errToastMess: 'An error occurred, please try again');
     }
   };

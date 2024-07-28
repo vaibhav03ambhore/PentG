@@ -57,8 +57,8 @@ const PaintingForm = () => {
         agreeTerms: false
       });
       toast.success('painting uploaded successfully!');
-    
       navigate('/paintings');
+      window.location.reload();
       
     }catch(error){
       toast.error(error?.data?.message||error?.data?.error||'Error uploading painting');
