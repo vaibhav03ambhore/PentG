@@ -185,7 +185,7 @@ const Order = () => {
             <span>Total</span>
             <span>${order.totalPrice}</span>
           </div>
-          {!order.isPaid && (
+          {!order.isPaid && (paintingOwnerId!==loggedInUserId )&&(
             <div>
               {isPending ? (
                 <div>Loading...</div>

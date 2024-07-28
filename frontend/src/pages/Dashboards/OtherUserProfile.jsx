@@ -13,6 +13,9 @@ const OtherUserProfile = ({ id }) => {
       );
     }
   }
+  if(isLoading){
+    return<div>Loading...</div>
+  }
 
   const {
     username,

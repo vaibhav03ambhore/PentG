@@ -56,7 +56,7 @@ const Profile = () => {
       
       dispatch(setCredential({...res}));
       toast.success('Profile updated successfully!')
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       error.data.errors.map(err=>console.log(err));
       let errToastMess='';
