@@ -19,7 +19,7 @@ const Navbar = () => {
   const userId = userInfo?._id;
 
   return (
-    <nav className='mx-4 bg-gray-800 px-5 py-4 rounded-xl'>
+    <nav className='mx-2 md:mx-4 bg-gray-800 px-5 py-4 rounded-xl'>
       <div className="flex items-center justify-between text-blue-gray-900">
         <div className="flex items-center">
           <Link to="/" className="text-xl font-bold text-blue-500 hover:text-blue-700">

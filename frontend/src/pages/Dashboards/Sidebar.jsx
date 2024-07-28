@@ -12,7 +12,6 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
   const userInfo=localStorage.getItem('userInfo')
   const loggedInUserId = userInfo?JSON.parse(userInfo)._id:null;
   const isOwnDashboard = id === loggedInUserId;
-  // console.log(loggedInUserId, id, isOwnDashboard)
   const [logoutApiCall] = useLogoutMutation();
   const navigate = useNavigate();
   const dispatch = useDispatch();

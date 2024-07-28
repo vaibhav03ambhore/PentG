@@ -58,6 +58,7 @@ const PaintingDetail = () => {
         formDataToSend.append(key, formData[key]);
       }
       await updatePainting({ id: pid, updatedPainting: formDataToSend });
+      toast.success("details modified successfully")
       setEditMode(null);
     } catch (error) {
       console.error(error);

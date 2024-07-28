@@ -198,7 +198,7 @@ const Profile = () => {
               <div className={isEditing ? `flex flex-col gap-4 md:text-md text-sm` : `flex flex-row gap-4`}>
                 <div className="flex flex-row  gap-2 ">
                   <a href={socialMediaLinks.facebook} target="_blank" rel="noopener noreferrer">
-                    <FaFacebook size={35} className="cursor-pointer bg-white rounded-full p-1 text-blue-600" />
+                    <FaFacebook size={35} className="cursor-pointer hover:text-white hover:bg-blue-600 bg-white rounded-full p-1 text-blue-600" />
                   </a>
                   {isEditing && (
                     <input
@@ -212,7 +212,7 @@ const Profile = () => {
                 </div>
                 <div className="flex flex-row gap-2">
                   <a href={socialMediaLinks.twitter} target="_blank" rel="noopener noreferrer">
-                      <FaTwitter size={35} className="cursor-pointer bg-white rounded-full p-1 text-blue-500" />
+                      <FaTwitter size={35} className="cursor-pointer hover:text-white hover:bg-blue-500 bg-white rounded-full p-1 text-blue-500" />
                   </a>
                   {isEditing && (
                     <input
@@ -226,7 +226,7 @@ const Profile = () => {
                 </div>
                 <div className="flex flex-row gap-2">
                   <a href={socialMediaLinks.instagram} target="_blank" rel="noopener noreferrer">
-                      <FaInstagram size={35} className="cursor-pointer bg-white rounded-full p-1 text-red-500" />
+                      <FaInstagram size={35} className="cursor-pointer bg-white rounded-full p-1 text-red-500 hover:text-white hover:bg-red-600" />
                   </a>
                   {isEditing && (
                     <input
