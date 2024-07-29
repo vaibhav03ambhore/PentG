@@ -15,7 +15,7 @@ const userSchema = mongoose.Schema({
       type: String,
       trim: true,
       minLength: [10,"Bio must be at least 10 characters"],
-      maxLength: [200,"Bio cannot exceed 200 characters"],
+      maxLength: [2000,"Bio cannot exceed 2000 characters"],
     },
     email: {
       type: String,

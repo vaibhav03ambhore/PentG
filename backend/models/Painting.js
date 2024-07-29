@@ -13,7 +13,7 @@ const paintingSchema = new mongoose.Schema({
     type: String,
     required: [true, "Description is required"],
     minLength:[10, "Description must be at least 10 characters"],
-    maxlength: [2000, "Description cannot exceed 2000 characters"],
+    maxlength: [5000, "Description cannot exceed 5000 characters"],
     trim: true,
   },
   creator: {
