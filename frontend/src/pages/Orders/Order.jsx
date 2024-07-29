@@ -52,7 +52,6 @@ const Order = () => {
         await updateOrderToPaid({ orderId, details });
         console.log(orderId,details)
         refetch();
-        window.location.reload();
         toast.success("Order is paid");
       } catch (error) {
         toast.error(error?.data?.message || error.message);
@@ -78,7 +77,6 @@ const Order = () => {
   const deliverHandler = async () => {
     await updateOrderToDelivered(orderId);
     refetch();
-    window.location.reload();
   };
 
 

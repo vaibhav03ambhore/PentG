@@ -25,7 +25,6 @@ const PlaceOrder = () => {
           paymentMethod:order.paymentMethod
         }).unwrap();
         dispatch(clearOrderInfo());
-        window.location.reload();
         toast.success("order placed successfully!")
         navigate(`/order/${res._id}`);
       }catch(error){
