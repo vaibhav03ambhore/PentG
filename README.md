@@ -3,6 +3,9 @@
 
 PentG is an online marketplace where artists can showcase their paintings for sale. Users can browse, purchase, and sell artworks. The platform allows users to view each other's profiles, see their artworks, and manage orders through a user-friendly dashboard.
 
+# Live here
+
+https://pentg-kr1l.onrender.com
 
 ## Features
 
@@ -40,6 +43,8 @@ PentG is an online marketplace where artists can showcase their paintings for sa
 
 **Server:** Node.js, Express, Mongoose, MongoDB, Cloudinary, JSON Web Token (jsonwebtoken)
 
+## Deployment
+Frontend and backend is deployed on render.com
 
 ## Run Locally
 
