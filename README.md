@@ -46,6 +46,20 @@ https://pentg-kr1l.onrender.com
 ## Deployment
 Frontend and backend is deployed on render.com
 
+## Videos
+
+Below is a video showcasing how PentG looks on a mobile screen and on laptop screen:
+
+### Mobile Screen Walkthrough
+
+[![PentG Mobile Walkthrough](https://img.youtube.com/vi/jNXINGDokaE/0.jpg)](https://www.youtube.com/watch?v=jNXINGDokaE)
+
+
+### Desktop Screen Walkthrough
+
+[![PentG Laptop Walkthrough](https://img.youtube.com/vi/OpYCDVOgG_g/0.jpg)](https://www.youtube.com/watch?v=OpYCDVOgG_g)
+
+
 ## Run Locally
 
 Clone the project
