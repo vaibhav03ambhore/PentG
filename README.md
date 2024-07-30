@@ -5,6 +5,7 @@ PentG is an online marketplace where artists can showcase their paintings for sa
 
 # Live here
 
+
 https://pentg-kr1l.onrender.com
 
 ## Features
@@ -58,6 +59,11 @@ Below is a video showcasing how PentG looks on a mobile screen and on laptop scr
 ### Desktop Screen Walkthrough
 
 [![PentG Laptop Walkthrough](https://img.youtube.com/vi/OpYCDVOgG_g/0.jpg)](https://www.youtube.com/watch?v=OpYCDVOgG_g)
+
+
+## Deployment
+
+Backend and Frontend both deployed on render.com
 
 
 ## Run Locally
