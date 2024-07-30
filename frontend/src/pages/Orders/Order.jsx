@@ -90,16 +90,20 @@ const Order = () => {
         <div className="border border-gray-700 p-4 rounded-lg">
           <table className="w-full">
             <thead className="border-b-2 border-gray-700 text-sky-500">
-              <tr className="text-md">
+              <tr className="text-md hidden sm:table-row">
                 <th className="p-2 text-center">Image</th>
                 <th className="p-2 text-center">Product</th>
                 <th className="p-2 text-center">Unit Price</th>
                 <th className="p-2 text-center">Shipping Charge</th>
                 <th className="p-2 text-center">Total</th>
               </tr>
+              <tr className="text-md table-row sm:hidden">
+                <th className="p-2 text-left">Attribute</th>
+                <th className="p-2 text-left">Value</th>
+              </tr>
             </thead>
             <tbody>
-              <tr>
+              <tr className="hidden sm:table-row ">
                 <td className="p-2 flex justify-center">
                   <img
                     src={order.orderItem.image}
@@ -113,6 +117,34 @@ const Order = () => {
                 <td className="p-2 text-center">${order.orderItem.price}</td>
                 <td className="p-2 text-center">${order.shippingCharge}</td>
                 <td className="p-2 text-center">${order.totalPrice}</td>
+              </tr>
+              <tr className="table-row sm:hidden">
+                <td className="p-2 text-left">Image</td>
+                <td className="p-2 flex justify-start">
+                  <img
+                    src={order.orderItem.image}
+                    alt={order.orderItem.name}
+                    className="w-16 h-16 object-cover"
+                  />
+                </td>
+              </tr>
+              <tr className="table-row sm:hidden">
+                <td className="p-2 text-left">Title</td>
+                <td className="p-2 text-left">
+                  <Link to={`/paintings/${order.orderItem._id}`} className="hover:underline italic">{order.orderItem.name}</Link>
+                </td>
+              </tr>
+              <tr className="table-row sm:hidden">
+                <td className="p-2 text-left">Price</td>
+                <td className="p-2 text-left">${order.orderItem.price}</td>
+              </tr>
+              <tr className="table-row sm:hidden">
+                <td className="p-2 text-left">Shipping charge</td>
+                <td className="p-2 text-left">${order.shippingCharge}</td>
+              </tr>
+              <tr className="table-row sm:hidden">
+                <td className="p-2 text-left">Total</td>
+                <td className="p-2 text-left">${order.totalPrice}</td>
               </tr>
             </tbody>
           </table>
@@ -153,7 +185,7 @@ const Order = () => {
             <span>Total</span>
             <span>${order.totalPrice}</span>
           </div>
-          {!order.isPaid && (
+          {!order.isPaid && (paintingOwnerId!==loggedInUserId )&&(
             <div>
               {isPending ? (
                 <div>Loading...</div>

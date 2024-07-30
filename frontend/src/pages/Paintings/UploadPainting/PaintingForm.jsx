@@ -57,8 +57,8 @@ const PaintingForm = () => {
         agreeTerms: false
       });
       toast.success('painting uploaded successfully!');
-    
       navigate('/paintings');
+      window.location.reload();
       
     }catch(error){
       toast.error(error?.data?.message||error?.data?.error||'Error uploading painting');
@@ -90,7 +90,7 @@ const PaintingForm = () => {
       </div>
       <div className="mb-4">
         <label htmlFor="dimensions" className="block font-semibold mb-2 text-sm md:text-md">  (Height x Width in inches or centimeters):</label>
-        <input type="text" id="dimensions" name="dimensions" placeholder="e.g 22X23 cm" value={formData.dimensions} onChange={handleChange} required className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-blue-400 text-sm md:text-md" />
+        <input type="text" id="dimensions" name="dimensions" placeholder="e.g 22x23 cm" value={formData.dimensions} onChange={handleChange} required className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-blue-400 text-sm md:text-md" />
       </div>
       <div className="mb-4">
         <label htmlFor="yearCreated" className="block font-semibold mb-2 text-sm md:text-md">Year Created:</label>

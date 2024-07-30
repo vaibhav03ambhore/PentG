@@ -29,7 +29,7 @@ const Paintings = () => {
         <div className='bg-gray-800 p-4 rounded-md'>
           <h3 className="text-xl font-semibold text-white mb-2">For Sale</h3>
           <div className="mb-4 flex flex-wrap">
-            {toSalePaintingsLoading?<div>loading</div> :forSalePaintings.map((painting) => (
+            {toSalePaintingsLoading?<div className='text-gray-300'>loading...</div> :forSalePaintings.map((painting) => (
               <Link to={`/paintings/${painting._id}`} key={painting._id}>
                 <Pcard painting={painting} />
               </Link>
@@ -40,7 +40,7 @@ const Paintings = () => {
         <div className='bg-gray-800 p-4 rounded-md'>
           <h3 className="text-xl font-semibold text-white mb-2">Sold</h3>
           <div className="mb-2 flex flex-wrap">
-            {soldPaintingsLoading?<div>loading</div>:soldPaintings.map((painting) => (
+            {soldPaintingsLoading?<div className='text-gray-300'>loading...</div>:soldPaintings.map((painting) => (
               <Link to={`/paintings/${painting._id}`} key={painting._id}>
                 <Pcard painting={painting} />
               </Link>
