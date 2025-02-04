@@ -165,7 +165,7 @@ const PaintingDetail = () => {
                         className="bg-gray-700 text-white px-2 py-1 outline-none border-b border-gray-500"
                       />
                     ) : (
-                      `₹${
+                      `$${
                         ownPainting
                           ? formData.price
                           : painting.price.toLocaleString()
