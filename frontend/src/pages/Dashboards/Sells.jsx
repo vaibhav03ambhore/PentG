@@ -3,9 +3,11 @@ import { useGetUserSellsQuery } from "../../redux/api/order";
 
 const Sells = () => {
   const { data: orders, isLoading, error } = useGetUserSellsQuery();
+
   if(error) return <div>{error?.data?.error}</div>
   if(isLoading) return <div>loading...</div>
   if(!orders) return <div>No orders..🙃</div>
+ 
   return (
     <div className="justify-center items-center overflow-x-auto">
         <table className="container table-auto">

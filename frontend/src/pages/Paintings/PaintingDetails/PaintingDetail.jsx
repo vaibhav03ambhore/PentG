@@ -58,7 +58,9 @@ const PaintingDetail = () => {
         formDataToSend.append(key, formData[key]);
       }
       await updatePainting({ id: pid, updatedPainting: formDataToSend });
+      toast.success("details modified successfully")
       setEditMode(null);
+      window.location.reload();
     } catch (error) {
       console.error(error);
     }
@@ -86,6 +88,7 @@ const PaintingDetail = () => {
       await deletePainting(pid);
       toast.success("Painting Deleted Successfully");
       Navigate("/paintings");
+      window.location.reload();
     } catch (error) {
       console.error(error);
       toast.error("Error Deleting Painting");

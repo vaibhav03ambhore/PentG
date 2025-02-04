@@ -1,17 +1,19 @@
 import React, { useState,useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { FaFacebook, FaTwitter, FaEdit, FaPlusCircle, FaInstagram } from 'react-icons/fa';
-import { useProfileMutation,useGetCurrentUserProfileQuery } from '../../redux/api/users';
+import { useProfileMutation,useGetCurrentUserProfileQuery,useLogoutMutation } from '../../redux/api/users';
 import {useDispatch} from 'react-redux';
 import { setCredential } from '../..//redux/features/auth/authSlice';
 import { toast } from 'react-toastify';
+import { logout } from '../../redux/features/auth/authSlice';
 
 const Profile = () => {
   const {data:userInfo,isLoading:profileLoading,error}=useGetCurrentUserProfileQuery();
   const navigate=useNavigate();
   const dispatch=useDispatch();
   const [updateProfile,{isLoading}] = useProfileMutation();
-  
+  const [logoutApiCall] = useLogoutMutation();
+
   const [username, setUsername] = useState(userInfo?.username ||'');
   const [email, setEmail] = useState(userInfo?.email || '');
   const [phoneNumber, setPhoneNumber] = useState(userInfo?.phoneNumber || '');
@@ -26,9 +28,11 @@ const Profile = () => {
  
   useEffect(()=>{
     if(error &&!profileLoading){
-      toast.error(error?.data?.message);
+      if(error?.data?.message=="User not found"){
+        logoutHandler();
+      }
+        toast.error(error?.data?.message);
     }
-    if(!userInfo) navigate('/login');
     setUsername(userInfo?.username);
     setEmail(userInfo?.email);
     setPhoneNumber(userInfo?.phoneNumber);
@@ -38,7 +42,17 @@ const Profile = () => {
     setSocialMediaLinks(userInfo?.socialMediaLinks||{});
   
   },[userInfo,navigate]);
- 
+
+  const logoutHandler =async () => {
+    try{
+      await logoutApiCall().unwrap();
+      dispatch(logout());
+      navigate('/login');
+
+    }catch(error){
+      console.log(error)
+    }
+  }
   
   const handleProfileSave = async () => { 
     try {
@@ -53,14 +67,13 @@ const Profile = () => {
       formData.append('socialMediaLinks',JSON.stringify(socialMediaLinks));
 
       const res = await updateProfile(formData).unwrap();
-      
       dispatch(setCredential({...res}));
-      toast.success('Profile updated successfully!')
       window.location.reload();
+      toast.success('Profile updated successfully!')
     } catch (error) {
-      error.data.errors.map(err=>console.log(err));
+      error?.data?.errors?.map(err=>console.log(err));
       let errToastMess='';
-      error.data.errors.map(err=>errToastMess+=err+'\n');
+      error?.data?.errors?.map(err=>errToastMess+=err+'\n');
       toast.error(errToastMess?errToastMess: 'An error occurred, please try again');
     }
   };
@@ -198,7 +211,7 @@ const Profile = () => {
               <div className={isEditing ? `flex flex-col gap-4 md:text-md text-sm` : `flex flex-row gap-4`}>
                 <div className="flex flex-row  gap-2 ">
                   <a href={socialMediaLinks.facebook} target="_blank" rel="noopener noreferrer">
-                    <FaFacebook size={35} className="cursor-pointer bg-white rounded-full p-1 text-blue-600" />
+                    <FaFacebook size={35} className="cursor-pointer hover:text-white hover:bg-blue-600 bg-white rounded-full p-1 text-blue-600" />
                   </a>
                   {isEditing && (
                     <input
@@ -212,7 +225,7 @@ const Profile = () => {
                 </div>
                 <div className="flex flex-row gap-2">
                   <a href={socialMediaLinks.twitter} target="_blank" rel="noopener noreferrer">
-                      <FaTwitter size={35} className="cursor-pointer bg-white rounded-full p-1 text-blue-500" />
+                      <FaTwitter size={35} className="cursor-pointer hover:text-white hover:bg-blue-500 bg-white rounded-full p-1 text-blue-500" />
                   </a>
                   {isEditing && (
                     <input
@@ -226,7 +239,7 @@ const Profile = () => {
                 </div>
                 <div className="flex flex-row gap-2">
                   <a href={socialMediaLinks.instagram} target="_blank" rel="noopener noreferrer">
-                      <FaInstagram size={35} className="cursor-pointer bg-white rounded-full p-1 text-red-500" />
+                      <FaInstagram size={35} className="cursor-pointer bg-white rounded-full p-1 text-red-500 hover:text-white hover:bg-red-600" />
                   </a>
                   {isEditing && (
                     <input

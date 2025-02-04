@@ -37,7 +37,7 @@ const Collection = () => {
           <option value="high-low">Price: High to Low</option>
         </select>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 md:mx-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 md:mx-6">
         {sortedPaintings.map((painting) => (
           <Link to={`/paintings/${painting?._id}`} key={painting?._id}>
             <Card className="hover:bg-opacity-20 hover:bg-purple-500 transition-all duration-300 transform hover:scale-105 border border-slate-600">

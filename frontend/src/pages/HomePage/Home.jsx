@@ -6,7 +6,7 @@ import Footer from './Footer/Footer'
 const Home = () => {
   return (
     <div >
-        <div className='flex flex-col justify-between gap-0  h-screen  py-2'>
+        <div className='flex flex-col gap-4  h-screen  py-2'>
           <Carousell/>
           <Body/>
           <Footer/>
